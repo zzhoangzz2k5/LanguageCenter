@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Student Dashboard";
+}
+
+<h2>Student Dashboard</h2>
+
+<h4>
+    Welcome @Session["FullName"]
+</h4>
+
+<hr />
+
+<ul>
+    <li>
+        @Html.ActionLink(
+            "My Profile",
+            "Profile",
+            "Student")
+    </li>
+
+    <li>
+        @Html.ActionLink(
+            "My Classes",
+            "MyClasses",
+            "Student")
+    </li>
+
+    <li>
+        @Html.ActionLink(
+            "Payments",
+            "Payments",
+            "Student")
+    </li>
+</ul>

@@ -11,7 +11,13 @@ public class HomeController : Controller
 
     public ActionResult Index()
     {
-        var programs = db.Programs.ToList();
+        var programs = db.Programs.Take(6).ToList();
+        var classes = db.Classes.Take(6).ToList();
+        var teachers = db.Teachers.Take(4).ToList();
+
+        ViewBag.Classes = classes;
+        ViewBag.Teachers = teachers;
+
         return View(programs);
     }
 }

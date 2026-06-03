@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<h4>Welcome @Session["FullName"]</h4>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-3">
+        <h3>@ViewBag.TotalPrograms</h3>
+        <p>Programs</p>
+    </div>
+
+    <div class="col-md-3">
+        <h3>@ViewBag.TotalClasses</h3>
+        <p>Classes</p>
+    </div>
+
+    <div class="col-md-3">
+        <h3>@ViewBag.TotalStudents</h3>
+        <p>Students</p>
+    </div>
+
+    <div class="col-md-3">
+        <h3>@ViewBag.TotalTeachers</h3>
+        <p>Teachers</p>
+    </div>
+
+</div>
