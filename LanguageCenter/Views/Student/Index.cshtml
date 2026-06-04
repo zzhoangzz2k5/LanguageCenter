@@ -1,60 +1,37 @@
-﻿@model IEnumerable<LanguageCenter.Models.StudentViewModel>
+﻿@model LanguageCenter.Models.StudentViewModel
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Students</h2>
+@if (Model == null)
+{
+    <h3>Student information not found</h3>
+    return;
+}
+
+<h2>Student Profile</h2>
 
 <table class="table table-bordered">
 
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Action</th>
+        <td>@Model.StudentId</td>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.FullName</td>
+    </tr>
 
-            <td>@item.StudentId</td>
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
 
-            <td>@item.FullName</td>
-
-            <td>@item.Email</td>
-
-            <td>
-                @(item.IsActive ? "Active" : "Inactive")
-            </td>
-
-            <td>
-
-                @if (item.IsActive)
-                {
-                    <a href="/Student/Deactivate/@item.StudentId"
-                       class="btn btn-danger btn-sm">
-                        Deactivate
-                    </a>
-                }
-                else
-                {
-                    <a href="/Student/Activate/@item.StudentId"
-                       class="btn btn-success btn-sm">
-                        Activate
-                    </a>
-                }
-
-            </td>
-
-        </tr>
-    }
+    <tr>
+        <th>Status</th>
+        <td>@(Model.IsActive ? "Active" : "Inactive")</td>
+    </tr>
 
 </table>
-
-<a href="/Admin"
-   class="btn btn-secondary">
-    Back
-</a>

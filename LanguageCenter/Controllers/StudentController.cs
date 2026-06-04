@@ -1,7 +1,8 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using LanguageCenter.Models;
+using System;
 using System.Configuration;
-using LanguageCenter.Models;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace LanguageCenter.Controllers
 {
@@ -13,19 +14,25 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Index()
         {
-            var students =
-                from s in db.Students
-                join u in db.UserAccounts
-                on s.UserId equals u.UserId
-                select new StudentViewModel
-                {
-                    StudentId = s.StudentId,
-                    FullName = u.FullName,
-                    Email = u.Email,
-                    IsActive = (bool)u.IsActive
-                };
+            if (Session["UserId"] == null)
+                return RedirectToAction("Login", "Account");
 
-            return View(students.ToList());
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            var student =
+                (from s in db.Students
+                 join u in db.UserAccounts
+                 on s.UserId equals u.UserId
+                 where u.UserId == userId
+                 select new StudentViewModel
+                 {
+                     StudentId = s.StudentId,
+                     FullName = u.FullName,
+                     Email = u.Email,
+                     IsActive = (bool)u.IsActive
+                 }).FirstOrDefault();
+
+            return View(student);
         }
 
         public ActionResult Activate(int id)

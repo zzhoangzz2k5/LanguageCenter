@@ -1,0 +1,28 @@
+﻿@model IEnumerable<LanguageCenter.Models.UserAccount>
+<h2>My Profile</h2>
+
+
+@foreach (var t in Model)
+{
+    <div class="col-md-4">
+        <div class="card teacher-card">
+
+            @if (!string.IsNullOrEmpty(t.Photo))
+            {
+                <img src="@Url.Content("~/Content/images/" + t.Photo)"
+                     class="card-img-top" />
+            }
+            else
+            {
+                <img src="@Url.Content("~/Content/images/default-teacher.jpg")"
+                     class="card-img-top" />
+            }
+
+            <div class="card-body">
+                <h5>@t.FullName</h5>
+                <p>@t.Email</p>
+            </div>
+
+        </div>
+    </div>
+}

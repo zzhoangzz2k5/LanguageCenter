@@ -4,11 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Language Center</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow">
+
         <div class="container">
 
             @Html.ActionLink(
@@ -18,17 +22,7 @@
                 null,
                 new { @class = "navbar-brand" })
 
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#menu">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse"
-                 id="menu">
+            <div class="collapse navbar-collapse" id="menu">
 
                 <ul class="navbar-nav me-auto">
 
@@ -59,9 +53,18 @@
                             new { @class = "nav-link" })
                     </li>
 
+                    <li class="nav-item">
+                        @Html.ActionLink(
+                            "Teachers",
+                            "Index",
+                            "Teacher",
+                            null,
+                            new { @class = "nav-link" })
+                    </li>
+
                 </ul>
 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
 
                     @if (Session["UserId"] == null)
                     {
@@ -106,17 +109,29 @@
             </div>
 
         </div>
+
     </nav>
+
     <div class="container body-content">
+
         @RenderBody()
+
         <hr />
+
         <footer>
-            <p>&copy; @DateTime.Now.Year - Language Center Management System</p>
+            <p>
+                &copy; @DateTime.Now.Year -
+                Language Center Management System
+            </p>
         </footer>
+
     </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

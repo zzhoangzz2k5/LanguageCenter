@@ -1,125 +1,210 @@
-﻿@model IEnumerable<LanguageCenter.Models.Program>
+﻿@using LanguageCenter.Models
 
 @{
     ViewBag.Title = "Home";
+
+    var programs = ViewBag.Programs as List<Program>;
+    var teachers = ViewBag.Teachers as List<UserAccount>;
 }
 
-<div class="jumbotron text-center">
-    <h1>LANGUAGE CENTER</h1>
-    <p>Learn English - Japanese - Korean with professional teachers</p>
+<!-- HERO -->
+
+<div class="hero-section">
+
+    <div class="hero-overlay">
+
+        <div class="hero-content">
+
+            <h1>Master English For Your Future</h1>
+
+            <p>
+                IELTS • TOEIC • TOEFL • Communication English
+            </p>
+
+            <img src="/Content/images/banner.jpg"
+                 class="hero-image" />
+
+            <a href="/Program"
+               class="btn btn-warning btn-lg me-2">
+                Explore Courses
+            </a>
+
+            <a href="/Account/Register"
+               class="btn btn-light btn-lg">
+                Join Now
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- STATS -->
+
+<section class="mt-5">
+
+    <div class="row text-center">
+
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h2>@ViewBag.StudentCount+</h2>
+                    <p>Students</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h2>@ViewBag.TeacherCount+</h2>
+                    <p>Teachers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h2>@ViewBag.ClassCount+</h2>
+                    <p>Classes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h2>@ViewBag.ProgramCount+</h2>
+                    <p>Programs</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- PROGRAMS -->
+
+<section class="mt-5">
+
+    <h2 class="section-title">
+        Our Programs
+    </h2>
+
+    <div class="row">
+
+        @if (programs != null)
+        {
+            foreach (var p in programs)
+            {
+                <div class="col-md-4 mb-4">
+
+                    <div class="card course-card h-100">
+
+                        <div class="card-body">
+
+                            <h4>@p.ProgramName</h4>
+
+                            <hr />
+
+                            <p>
+                                <strong>Level:</strong>
+                                @p.LevelName
+                            </p>
+
+                            <p>
+                                <strong>Duration:</strong>
+                                @p.DurationMonths Months
+                            </p>
+
+                            <p>
+                                <strong>Fee:</strong>
+                                @String.Format("{0:N0}", p.Fee) VNĐ
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-white border-0">
+
+                            <a href="/Program"
+                               class="btn btn-primary w-100">
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+<!-- TEACHERS -->
+
+<section class="mt-5">
+
+    <h2 class="section-title">
+        Meet Our Teachers
+    </h2>
+
+    <div class="row">
+
+        @if (teachers != null)
+        {
+            foreach (var t in teachers)
+            {
+                <div class="col-md-4 mb-4">
+
+                    <div class="card teacher-card">
+
+                        <img src="/Content/images/teacher1.jpg"
+                             class="teacher-image" />
+
+                        <div class="card-body text-center">
+
+                            <h5>@t.FullName</h5>
+
+                            <p class="text-muted">
+                                Professional English Instructor
+                            </p>
+
+                            <a href="/Teacher"
+                               class="btn btn-outline-primary btn-sm">
+                                View Profile
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta-section mt-5">
+
+    <h2>Start Learning Today</h2>
 
     <p>
-        <a href="/Program" class="btn btn-primary btn-lg">
-            Explore Programs
-        </a>
+        Join thousands of students improving their English skills.
     </p>
-</div>
 
-<hr />
+    <a href="/Account/Register"
+       class="btn btn-warning btn-lg">
+        Register Now
+    </a>
 
-<h2>Programs</h2>
-
-<div class="row">
-
-    @foreach (var p in Model)
-    {
-        <div class="col-md-4">
-
-            <div class="panel panel-primary">
-
-                <div class="panel-heading">
-                    <h4>@p.ProgramName</h4>
-                </div>
-
-                <div class="panel-body">
-
-                    <p>
-                        <strong>Level:</strong>
-                        @p.LevelName
-                    </p>
-
-                    <p>
-                        <strong>Duration:</strong>
-                        @p.DurationMonths months
-                    </p>
-
-                    <p>
-                        <strong>Fee:</strong>
-                        @String.Format("{0:N0}", p.Fee) VNĐ
-                    </p>
-
-                    <p>
-                        @p.Description
-                    </p>
-                    <p>
-                        <a href="/Program/Detail/@p.ProgramId"
-                           class="btn btn-info">
-                            View Detail
-                        </a>
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-    }
-
-</div>
-
-<hr />
-
-<h2>New Classes</h2>
-
-<table class="table table-bordered">
-
-    <tr>
-        <th>Class Name</th>
-        <th>Start Date</th>
-    </tr>
-
-    @foreach (var c in ViewBag.Classes)
-    {
-        <tr>
-            <td>@c.ClassName</td>
-            <td>@c.StartDate</td>
-        </tr>
-    }
-
-</table>
-
-<hr />
-
-<h2>Teachers</h2>
-
-<div class="row">
-
-    @foreach (var t in ViewBag.Teachers)
-    {
-        <div class="col-md-4">
-
-            <div class="panel panel-default">
-
-                <div class="panel-body text-center">
-
-                    <h4>@t.GetType().GetProperty("FullName").GetValue(t, null)</h4>
-
-                    <p>
-                        Specialty:
-                        @t.GetType().GetProperty("Specialty").GetValue(t, null)
-                    </p>
-
-                    <p>
-                        Experience:
-                        @t.GetType().GetProperty("ExperienceYears").GetValue(t, null)
-                        years
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-    }
-
-</div>
+</section>

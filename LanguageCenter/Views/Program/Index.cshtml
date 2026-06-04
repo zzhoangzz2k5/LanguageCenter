@@ -6,54 +6,65 @@
 <h2>Programs</h2>
 
 <p>
-    <a href="/Program/Create"
-       class="btn btn-success">
-        Add Program
-    </a>
+    @if (Session["Role"] != null &&
+         Session["Role"].ToString() == "Admin")
+    {
+        <a href="/Program/Create"
+           class="btn btn-success">
+            Add Program
+        </a>
+    }
 </p>
 
-<table class="table table-bordered">
-
-    <tr>
-        <th>Name</th>
-        <th>Level</th>
-        <th>Duration</th>
-        <th>Fee</th>
-        <th>Action</th>
-    </tr>
+<div class="row">
 
     @foreach (var item in Model)
     {
-        <tr>
+        <div class="col-md-4">
 
-            <td>@item.ProgramName</td>
+            <div class="card mb-4 shadow">
 
-            <td>@item.LevelName</td>
+                <div class="card-body">
 
-            <td>@item.DurationMonths</td>
+                    <h4>@item.ProgramName</h4>
 
-            <td>@item.Fee</td>
+                    <p><b>Level:</b> @item.LevelName</p>
 
-            <td>
+                    <p>
+                        <b>Duration:</b>
+                        @item.DurationMonths months
+                    </p>
 
-                <a href="/Program/Edit/@item.ProgramId"
-                   class="btn btn-warning btn-sm">
-                    Edit
-                </a>
+                    <p>
+                        <b>Fee:</b>
+                        @String.Format("{0:N0}", item.Fee) VNĐ
+                    </p>
 
-                <a href="/Program/Delete/@item.ProgramId"
-                   class="btn btn-danger btn-sm">
-                    Delete
-                </a>
+                    <a href="/Program/Detail/@item.ProgramId"
+                       class="btn btn-primary">
+                        Detail
+                    </a>
 
-            </td>
+                </div>
 
-        </tr>
+            </div>
+
+        </div>
     }
+</div>
 
-</table>
-
-<a href="/Admin"
-   class="btn btn-secondary">
-    Back
-</a>
+@if (Session["Role"] != null &&
+     Session["Role"].ToString() == "Admin")
+{
+    <a href="/Admin"
+       class="btn btn-secondary">
+        Back
+    </a>
+}
+else
+{
+    <a href="/Home"
+       class="btn btn-secondary">
+        Home
+    </a>
+}

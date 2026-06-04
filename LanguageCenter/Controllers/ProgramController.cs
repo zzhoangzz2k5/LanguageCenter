@@ -35,14 +35,19 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Create()
         {
+            if (!IsAdmin())
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(Program p)
         {
-            db.Programs.InsertOnSubmit(p);
+            if (!IsAdmin())
+                return RedirectToAction("Index", "Home");
 
+            db.Programs.InsertOnSubmit(p);
             db.SubmitChanges();
 
             return RedirectToAction("Index");
@@ -50,19 +55,22 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Edit(int id)
         {
+            if (!IsAdmin())
+                return RedirectToAction("Index", "Home");
+
             var p = db.Programs
-                      .FirstOrDefault(x =>
-                      x.ProgramId == id);
+                      .FirstOrDefault(x => x.ProgramId == id);
 
             return View(p);
         }
-
         [HttpPost]
         public ActionResult Edit(Program model)
         {
+            if (!IsAdmin())
+                return RedirectToAction("Index", "Home");
+
             var p = db.Programs
-                      .FirstOrDefault(x =>
-                      x.ProgramId == model.ProgramId);
+                      .FirstOrDefault(x => x.ProgramId == model.ProgramId);
 
             p.ProgramName = model.ProgramName;
             p.LevelName = model.LevelName;
@@ -77,9 +85,11 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Delete(int id)
         {
+            if (!IsAdmin())
+                return RedirectToAction("Index", "Home");
+
             var p = db.Programs
-                      .FirstOrDefault(x =>
-                      x.ProgramId == id);
+                      .FirstOrDefault(x => x.ProgramId == id);
 
             db.Programs.DeleteOnSubmit(p);
 
@@ -87,5 +97,14 @@ namespace LanguageCenter.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        private bool IsAdmin()
+        {
+            return Session["Role"] != null &&
+                   Session["Role"].ToString() == "Admin";
+        }
+
+
     }
 }

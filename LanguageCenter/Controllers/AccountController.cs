@@ -48,7 +48,7 @@ namespace LanguageCenter.Controllers
                 return RedirectToAction("Index", "Admin");
 
             if (user.Role == "Teacher")
-                return RedirectToAction("Index", "Teacher");
+                return RedirectToAction("Dashboard", "Teacher");
 
             return RedirectToAction("Index", "Student");
         }

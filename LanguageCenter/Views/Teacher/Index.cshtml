@@ -1,31 +1,29 @@
-﻿@{
-    ViewBag.Title = "Teacher Dashboard";
-}
+﻿@model IEnumerable<LanguageCenter.Models.UserAccount>
 
-<h2>Teacher Dashboard</h2>
+<h2 class="mb-4">Our Teachers</h2>
 
-<h4>
-    Welcome @Session["FullName"]
-</h4>
+<div class="row">
 
-<hr />
+    @foreach (var t in Model)
+    {
+        <div class="col-md-4">
 
-<ul>
+            <div class="card teacher-card">
 
-    <li>
-        My Classes
-    </li>
+                <img src="~/Content/images/teacher1.jpg"
+                     class="card-img-top" />
 
-    <li>
-        Student List
-    </li>
+                <div class="card-body">
 
-    <li>
-        Teaching Schedule
-    </li>
+                    <h5>@t.FullName</h5>
 
-    <li>
-        Placement Tests
-    </li>
+                    <p>@t.Email</p>
 
-</ul>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

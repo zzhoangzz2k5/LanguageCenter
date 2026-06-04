@@ -1,7 +1,7 @@
-﻿using LanguageCenter.Models;
-using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using System.Configuration;
+using LanguageCenter.Models;
 
 namespace LanguageCenter.Controllers
 {
@@ -13,24 +13,30 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Classes = db.Classes.Take(6).ToList();
+            ViewBag.Programs = db.Programs.Take(6).ToList();
 
-            var teachers =
-            (
-                from t in db.Teachers
-                join u in db.UserAccounts
-                on t.UserId equals u.UserId
-                select new
-                {
-                    u.FullName,
-                    t.Specialty,
-                    t.ExperienceYears
-                }
-            ).Take(4).ToList();
+            ViewBag.Classes = db.Classes
+                                .OrderByDescending(x => x.StartDate)
+                                .Take(5)
+                                .ToList();
 
-            ViewBag.Teachers = teachers;
+            ViewBag.Teachers = db.UserAccounts
+                                 .Where(x => x.Role == "Teacher")
+                                 .Take(6)
+                                 .ToList();
 
-            return View(db.Programs.Take(6).ToList());
+            // Statistics
+            ViewBag.StudentCount = db.Students.Count();
+
+            ViewBag.TeacherCount =
+                db.UserAccounts.Count(x => x.Role == "Teacher");
+
+            ViewBag.ClassCount = db.Classes.Count();
+
+            ViewBag.ProgramCount = db.Programs.Count();
+
+            return View();
         }
+
     }
 }
