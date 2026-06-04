@@ -4,13 +4,13 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Students</h2>
+<h2>Student Management</h2>
 
 <table class="table table-bordered">
 
     <tr>
         <th>ID</th>
-        <th>Name</th>
+        <th>Full Name</th>
         <th>Email</th>
         <th>Status</th>
         <th>Action</th>
@@ -34,14 +34,14 @@
 
                 @if (item.IsActive)
                 {
-                    <a href="/Student/Deactivate/@item.StudentId"
+                    <a href="/Admin/DeactivateStudent/@item.StudentId"
                        class="btn btn-danger btn-sm">
                         Deactivate
                     </a>
                 }
                 else
                 {
-                    <a href="/Student/Activate/@item.StudentId"
+                    <a href="/Admin/ActivateStudent/@item.StudentId"
                        class="btn btn-success btn-sm">
                         Activate
                     </a>
@@ -53,8 +53,3 @@
     }
 
 </table>
-
-<a href="/Admin"
-   class="btn btn-secondary">
-    Back
-</a>

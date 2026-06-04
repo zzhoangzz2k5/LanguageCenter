@@ -1,17 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="LanguageCenter" Class="LanguageCenterDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Table Name="dbo.UserAccount" Member="UserAccounts">
-    <Type Name="UserAccount">
-      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="Role" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="UserAccount_Student" Member="Students" ThisKey="UserId" OtherKey="UserId" Type="Student" />
-      <Association Name="UserAccount_Teacher" Member="Teachers" ThisKey="UserId" OtherKey="UserId" Type="Teacher" />
-    </Type>
-  </Table>
   <Table Name="dbo.Class" Member="Classes">
     <Type Name="Class">
       <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -27,6 +14,19 @@
       <Association Name="Class_Registration" Member="Registrations" ThisKey="ClassId" OtherKey="ClassId" Type="Registration" />
       <Association Name="Program_Class" Member="Program" ThisKey="ProgramId" OtherKey="ProgramId" Type="Program" IsForeignKey="true" />
       <Association Name="Teacher_Class" Member="Teacher" ThisKey="TeacherId" OtherKey="TeacherId" Type="Teacher" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserAccount" Member="UserAccounts">
+    <Type Name="UserAccount">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="UserAccount_Student" Member="Students" ThisKey="UserId" OtherKey="UserId" Type="Student" />
+      <Association Name="UserAccount_Teacher" Member="Teachers" ThisKey="UserId" OtherKey="UserId" Type="Teacher" />
     </Type>
   </Table>
   <Table Name="dbo.ClassSchedule" Member="ClassSchedules">
@@ -83,6 +83,7 @@
       <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="ProgramImage" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ProgramStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Program_Class" Member="Classes" ThisKey="ProgramId" OtherKey="ProgramId" Type="Class" />
     </Type>
   </Table>

@@ -1,0 +1,41 @@
+﻿@model LanguageCenter.Models.Program
+
+@{
+    ViewBag.Title = "Program Detail";
+}
+
+<h2>@Model.ProgramName</h2>
+
+<hr />
+
+<p>
+    <strong>Level:</strong>
+    @Model.LevelName
+</p>
+
+<p>
+    <strong>Duration:</strong>
+    @Model.DurationMonths months
+</p>
+
+<p>
+    <strong>Fee:</strong>
+    @String.Format("{0:N0}", Model.Fee) VNĐ
+</p>
+
+<p>
+    <strong>Description:</strong>
+    @Model.Description
+</p>
+
+<br />
+
+<a href="/Account/Register"
+   class="btn btn-success">
+    Register Now
+</a>
+
+<a href="/Program"
+   class="btn btn-default">
+    Back
+</a>

@@ -51,6 +51,12 @@
                     <p>
                         @p.Description
                     </p>
+                    <p>
+                        <a href="/Program/Detail/@p.ProgramId"
+                           class="btn btn-info">
+                            View Detail
+                        </a>
+                    </p>
 
                 </div>
 
@@ -87,11 +93,33 @@
 <h2>Teachers</h2>
 
 <div class="row">
-    <h2>Teachers</h2>
 
     @foreach (var t in ViewBag.Teachers)
     {
-        <p>@t</p>
+        <div class="col-md-4">
+
+            <div class="panel panel-default">
+
+                <div class="panel-body text-center">
+
+                    <h4>@t.GetType().GetProperty("FullName").GetValue(t, null)</h4>
+
+                    <p>
+                        Specialty:
+                        @t.GetType().GetProperty("Specialty").GetValue(t, null)
+                    </p>
+
+                    <p>
+                        Experience:
+                        @t.GetType().GetProperty("ExperienceYears").GetValue(t, null)
+                        years
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
     }
 
 </div>

@@ -13,13 +13,57 @@ namespace LanguageCenter.Controllers
 
         public ActionResult Index()
         {
-            if (Session["Role"] == null ||
-                Session["Role"].ToString() != "Student")
+            var students =
+                from s in db.Students
+                join u in db.UserAccounts
+                on s.UserId equals u.UserId
+                select new StudentViewModel
+                {
+                    StudentId = s.StudentId,
+                    FullName = u.FullName,
+                    Email = u.Email,
+                    IsActive = (bool)u.IsActive
+                };
+
+            return View(students.ToList());
+        }
+
+        public ActionResult Activate(int id)
+        {
+            var student =
+                db.Students.FirstOrDefault(x => x.StudentId == id);
+
+            if (student != null)
             {
-                return RedirectToAction("Login", "Account");
+                var user =
+                    db.UserAccounts.FirstOrDefault(x =>
+                    x.UserId == student.UserId);
+
+                user.IsActive = true;
+
+                db.SubmitChanges();
             }
 
-            return View();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Deactivate(int id)
+        {
+            var student =
+                db.Students.FirstOrDefault(x => x.StudentId == id);
+
+            if (student != null)
+            {
+                var user =
+                    db.UserAccounts.FirstOrDefault(x =>
+                    x.UserId == student.UserId);
+
+                user.IsActive = false;
+
+                db.SubmitChanges();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

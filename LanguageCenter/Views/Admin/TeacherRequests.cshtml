@@ -1,8 +1,15 @@
 ﻿@model List<LanguageCenter.Models.UserAccount>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
 
 <h2>Teacher Requests</h2>
 
 <table class="table">
+    <button class="btn btn-default"
+            onclick="history.back();">
+        ← Back
+    </button>
 
     <tr>
         <th>Name</th>

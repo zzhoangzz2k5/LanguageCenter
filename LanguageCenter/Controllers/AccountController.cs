@@ -110,6 +110,16 @@ namespace LanguageCenter.Controllers
             db.UserAccounts.InsertOnSubmit(user);
 
             db.SubmitChanges();
+            if (user.Role == "Student")
+            {
+                Student student = new Student();
+
+                student.UserId = user.UserId;
+
+                db.Students.InsertOnSubmit(student);
+
+                db.SubmitChanges();
+            }
 
             if (role == "PendingTeacher")
             {

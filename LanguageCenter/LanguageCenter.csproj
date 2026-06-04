@@ -132,6 +132,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Global.asax.cs">
@@ -142,6 +143,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LanguageCenter.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentViewModel.cs" />
+    <Compile Include="Models\TeacherViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,12 +212,21 @@
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Admin\TeacherRequests.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Program\Index.cshtml" />
+    <Content Include="Views\Program\Create.cshtml" />
+    <Content Include="Views\Program\Edit.cshtml" />
+    <Content Include="Views\Admin\Students.cshtml" />
+    <Content Include="Views\Admin\Teachers.cshtml" />
+    <Content Include="Views\Admin\Programs.cshtml" />
+    <Content Include="Views\Admin\CreateProgram.cshtml" />
+    <Content Include="Views\Admin\EditProgram.cshtml" />
+    <Content Include="Views\Program\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\DataContext\" />
-    <Folder Include="Views\Program\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

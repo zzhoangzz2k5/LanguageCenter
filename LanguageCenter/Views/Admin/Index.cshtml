@@ -1,33 +1,108 @@
 ﻿@{
-    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Admin Dashboard</h2>
 
-<h4>Welcome @Session["FullName"]</h4>
+@if (ViewBag.PendingTeachers > 0)
+{
+    <div class="alert alert-warning">
+        <strong>
+            @ViewBag.PendingTeachers teacher request(s) waiting for approval.
+        </strong>
 
-<hr />
+        <br /><br />
+
+        <a href="/Admin/TeacherRequests"
+           class="btn btn-warning">
+            Review Requests
+        </a>
+    </div>
+}
 
 <div class="row">
 
     <div class="col-md-3">
-        <h3>@ViewBag.TotalPrograms</h3>
-        <p>Programs</p>
+        <div class="panel panel-primary">
+            <div class="panel-body text-center">
+                <h2>@ViewBag.TotalPrograms</h2>
+                <h4>Programs</h4>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <h3>@ViewBag.TotalClasses</h3>
-        <p>Classes</p>
+        <div class="panel panel-success">
+            <div class="panel-body text-center">
+                <h2>@ViewBag.TotalStudents</h2>
+                <h4>Students</h4>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <h3>@ViewBag.TotalStudents</h3>
-        <p>Students</p>
+        <div class="panel panel-warning">
+            <div class="panel-body text-center">
+                <h2>@ViewBag.TotalTeachers</h2>
+                <h4>Teachers</h4>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <h3>@ViewBag.TotalTeachers</h3>
-        <p>Teachers</p>
+        <div class="panel panel-danger">
+            <div class="panel-body text-center">
+                <h2>@ViewBag.TotalClasses</h2>
+                <h4>Classes</h4>
+            </div>
+        </div>
     </div>
 
 </div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="alert alert-primary">
+            <h3>@ViewBag.TotalRegistrations</h3>
+            Registrations
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="alert alert-success">
+            <h3>@ViewBag.TotalPayments</h3>
+            Payments
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="alert alert-info">
+            <h3>@ViewBag.TotalPlacementTests</h3>
+            Placement Tests
+        </div>
+    </div>
+
+</div>
+<hr />
+
+<h3>Quick Actions</h3>
+
+<p>
+
+    <a href="/Admin/TeacherRequests"
+       class="btn btn-warning">
+        Teacher Requests
+    </a>
+
+    <a href="/Admin/Students"
+       class="btn btn-primary">
+        Students
+    </a>
+
+    <a href="/Admin/Teachers"
+       class="btn btn-success">
+        Teachers
+    </a>
+
+</p>

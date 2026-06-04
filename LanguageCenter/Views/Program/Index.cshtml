@@ -1,0 +1,59 @@
+﻿@model IEnumerable<LanguageCenter.Models.Program>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Programs</h2>
+
+<p>
+    <a href="/Program/Create"
+       class="btn btn-success">
+        Add Program
+    </a>
+</p>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Name</th>
+        <th>Level</th>
+        <th>Duration</th>
+        <th>Fee</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>@item.ProgramName</td>
+
+            <td>@item.LevelName</td>
+
+            <td>@item.DurationMonths</td>
+
+            <td>@item.Fee</td>
+
+            <td>
+
+                <a href="/Program/Edit/@item.ProgramId"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="/Program/Delete/@item.ProgramId"
+                   class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<a href="/Admin"
+   class="btn btn-secondary">
+    Back
+</a>
