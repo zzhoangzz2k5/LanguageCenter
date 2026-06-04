@@ -3,21 +3,34 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
-public class HomeController : Controller
+namespace LanguageCenter.Controllers
 {
-    LanguageCenterDataContext db =
-        new LanguageCenterDataContext(
+    public class HomeController : Controller
+    {
+        LanguageCenterDataContext db =
+            new LanguageCenterDataContext(
             ConfigurationManager.ConnectionStrings["LanguageCenterConnectionString"].ConnectionString);
 
-    public ActionResult Index()
-    {
-        var programs = db.Programs.Take(6).ToList();
-        var classes = db.Classes.Take(6).ToList();
-        var teachers = db.Teachers.Take(4).ToList();
+        public ActionResult Index()
+        {
+            ViewBag.Classes = db.Classes.Take(6).ToList();
 
-        ViewBag.Classes = classes;
-        ViewBag.Teachers = teachers;
+            var teachers =
+            (
+                from t in db.Teachers
+                join u in db.UserAccounts
+                on t.UserId equals u.UserId
+                select new
+                {
+                    u.FullName,
+                    t.Specialty,
+                    t.ExperienceYears
+                }
+            ).Take(4).ToList();
 
-        return View(programs);
+            ViewBag.Teachers = teachers;
+
+            return View(db.Programs.Take(6).ToList());
+        }
     }
 }

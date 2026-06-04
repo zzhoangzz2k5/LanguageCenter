@@ -16,7 +16,6 @@ namespace LanguageCenter.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public ActionResult Login(string email, string password)
         {
@@ -29,6 +28,15 @@ namespace LanguageCenter.Controllers
             if (user == null)
             {
                 ViewBag.Error = "Email hoặc mật khẩu không đúng";
+                return View();
+            }
+
+            // Teacher đang chờ duyệt
+            if (user.Role == "PendingTeacher")
+            {
+                ViewBag.Error =
+                    "Your teacher account is waiting for admin approval.";
+
                 return View();
             }
 
@@ -48,6 +56,69 @@ namespace LanguageCenter.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
+            return RedirectToAction("Login");
+        }
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(
+     string fullname,
+     string email,
+     string password,
+     string confirmPassword,
+     string role)
+        {
+            if (password != confirmPassword)
+            {
+                ViewBag.Message = "Password does not match";
+                return View();
+            }
+
+            var check =
+                db.UserAccounts
+                  .FirstOrDefault(x =>
+                  x.Email == email);
+
+            if (check != null)
+            {
+                ViewBag.Message = "Email already exists";
+                return View();
+            }
+
+            UserAccount user =
+                new UserAccount();
+
+            user.FullName = fullname;
+            user.Email = email;
+            user.PasswordHash = password;
+
+            // Chỉ cho đăng ký Student hoặc Teacher chờ duyệt
+            if (role == "PendingTeacher")
+            {
+                user.Role = "PendingTeacher";
+            }
+            else
+            {
+                user.Role = "Student";
+            }
+
+            user.IsActive = true;
+
+            db.UserAccounts.InsertOnSubmit(user);
+
+            db.SubmitChanges();
+
+            if (role == "PendingTeacher")
+            {
+                ViewBag.Message =
+                    "Teacher registration request sent. Please wait for admin approval.";
+
+                return View();
+            }
+
             return RedirectToAction("Login");
         }
     }

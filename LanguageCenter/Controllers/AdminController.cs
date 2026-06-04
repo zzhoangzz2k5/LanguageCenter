@@ -26,5 +26,28 @@ namespace LanguageCenter.Controllers
 
             return View();
         }
+        public ActionResult TeacherRequests()
+        {
+            var data =
+                db.UserAccounts
+                  .Where(x =>
+                  x.Role == "PendingTeacher")
+                  .ToList();
+
+            return View(data);
+        }
+        public ActionResult ApproveTeacher(int id)
+        {
+            var user =
+                db.UserAccounts
+                  .FirstOrDefault(x =>
+                  x.UserId == id);
+
+            user.Role = "Teacher";
+
+            db.SubmitChanges();
+
+            return RedirectToAction("TeacherRequests");
+        }
     }
 }
