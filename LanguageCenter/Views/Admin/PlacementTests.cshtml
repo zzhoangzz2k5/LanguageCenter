@@ -1,0 +1,53 @@
+@model IEnumerable<LanguageCenter.Models.PlacementTest>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Placement Tests";
+}
+
+<h2>Manage Placement Tests</h2>
+
+@using (Html.BeginForm("CreatePlacementTest", "Admin", FormMethod.Post, new { @class = "card p-4 mb-4" }))
+{
+    <h4>Create Test Schedule</h4>
+    <div class="row g-3">
+        <div class="col-md-3"><label>Student ID</label><input type="number" name="studentId" class="form-control" required /></div>
+        <div class="col-md-3"><label>Test Date</label><input type="date" name="testDate" class="form-control" required /></div>
+        <div class="col-md-3"><label>Test Time</label><input type="time" name="testTime" class="form-control" required /></div>
+        <div class="col-md-3"><label>Suggested Level</label><input name="suggestedLevel" class="form-control" required /></div>
+    </div>
+    <button class="btn btn-success mt-3">Create Test Schedule</button>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Student</th>
+        <th>Test Date</th>
+        <th>Test Time</th>
+        <th>Suggested Level</th>
+        <th>Result</th>
+        <th>Status</th>
+        <th>Update Result</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@(item.Student != null && item.Student.UserAccount != null ? item.Student.UserAccount.FullName : "Student")</td>
+            <td>@(item.TestDate.HasValue ? item.TestDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+            <td>@(item.TestTime.HasValue ? item.TestTime.Value.ToString(@"hh\:mm") : "Updating")</td>
+            <td>@item.SuggestedLevel</td>
+            <td>@item.ResultScore</td>
+            <td>@item.Status</td>
+            <td>
+                @using (Html.BeginForm("UpdatePlacementResult", "Admin", FormMethod.Get))
+                {
+                    <input type="hidden" name="id" value="@item.PlacementTestId" />
+                    <input type="number" name="resultScore" value="@item.ResultScore" class="form-control mb-2" placeholder="Score" />
+                    <input name="suggestedLevel" value="@item.SuggestedLevel" class="form-control mb-2" placeholder="Level" />
+                    <input name="status" value="@item.Status" class="form-control mb-2" placeholder="Status" />
+                    <button class="btn btn-primary btn-sm">Update</button>
+                }
+            </td>
+        </tr>
+    }
+</table>

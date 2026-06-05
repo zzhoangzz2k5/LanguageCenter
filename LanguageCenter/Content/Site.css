@@ -1,382 +1,433 @@
-﻿/* Set padding to keep content from hitting the edges */
+/* Global styles & typography */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
 .body-content {
-    margin-top: 15px;
+    margin-top: 30px;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 100%;
 }
-.hero-banner {
-    height: 650px;
-    background-image: url('/Content/images/banner.jpg');
+
+/* Custom Navbar styling */
+.navbar {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #94a3b8 !important;
+    margin-left: 15px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #f8fafc !important;
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 580px;
+    border-radius: 24px;
+    background-image: linear-gradient(to right, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.45)), url('/Content/images/banner.jpg');
     background-size: cover;
     background-position: center;
-    position: relative;
-    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+    margin-bottom: 60px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
 .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,.45);
+    padding: 60px;
+    width: 100%;
+    max-width: 700px;
+}
+
+.hero-overlay h1 {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.hero-overlay p {
+    font-size: 20px;
+    color: #cbd5e1;
+    margin-bottom: 35px;
+    font-weight: 400;
+}
+
+/* Glassmorphism Stats Cards */
+.stat-card {
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 4px solid #6366f1;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+}
+
+.stat-card h2 {
+    font-size: 44px;
+    font-weight: 800;
+    color: #4f46e5;
+    margin-bottom: 5px;
+    letter-spacing: -1px;
+}
+
+.stat-card p {
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #0f172a;
+    margin: 70px 0 40px;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+/* Program & Course Cards */
+.course-card {
+    border: none;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
 }
 
-    .hero-overlay h1 {
-        font-size: 65px;
-        font-weight: 700;
-    }
-
-    .hero-overlay p {
-        font-size: 24px;
-        margin-bottom: 25px;
-    }
-
-.hero-content {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    transform: translateY(-50%);
-    color: white;
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-    .hero-content h1 {
-        font-size: 55px;
-        font-weight: bold;
-    }
-
-    .hero-content p {
-        font-size: 24px;
-    }
-
-.teacher-card {
-    margin-bottom: 25px;
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-    transition: .3s;
+.course-card .card-body {
+    padding: 30px;
 }
 
-    .teacher-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .teacher-card img {
-        height: 250px;
-        object-fit: cover;
-    }
-
-/* Statistics Cards */
-
-.stat-card {
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-    border-radius: 12px;
-    margin-bottom: 20px;
-    transition: .3s;
-}
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .stat-card h1 {
-        font-size: 42px;
-        font-weight: bold;
-        color: #0d6efd;
-    }
-
-/* Program Cards */
-
-.course-card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-    margin-bottom: 25px;
-    transition: .3s;
-}
-
-    .course-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .course-card .card-body {
-        padding: 25px;
-    }
-
-    .course-card h4 {
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-/* Navbar */
-
-.navbar {
-    padding: 15px 0;
-}
-
-.navbar-brand {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.nav-link {
-    margin-left: 10px;
-    font-size: 16px;
-}
-
-    .nav-link:hover {
-        color: #ffc107 !important;
-    }
-
-/* Footer */
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-    color: #777;
-}
-
-/* Section Title */
-
-h2.text-center {
-    margin-top: 40px;
-    margin-bottom: 30px;
-    font-weight: bold;
-}
-
-
-.hero-section {
-    position: relative;
-    height: 550px;
-    overflow: hidden;
-    border-radius: 15px;
-    margin-bottom: 40px;
-}
-
-.hero-image {
-    width: 100%;
-    height: 550px;
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 50%;
-    left: 8%;
-    transform: translateY(-50%);
-    color: white;
-}
-
-    .hero-overlay h1 {
-        font-size: 60px;
-        font-weight: bold;
-    }
-
-    .hero-overlay p {
-        font-size: 24px;
-        margin-bottom: 25px;
-    }
-
-.section-title {
-    text-align: center;
-    margin: 50px 0 30px;
-    font-weight: bold;
-}
-
-.stat-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-}
-
-.course-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-    transition: .3s;
-    margin-bottom: 25px;
-}
-
-    .course-card:hover {
-        transform: translateY(-8px);
-    }
-
-.teacher-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
-    transition: .3s;
-    margin-bottom: 25px;
-}
-
-    .teacher-card:hover {
-        transform: translateY(-8px);
-    }
-
-.teacher-image {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-}
-
-.custom-navbar {
-    background: linear-gradient(135deg,#0d6efd,#0a58ca);
-    padding: 15px 0;
-}
-
-.navbar-brand {
-    font-size: 28px;
+.course-card h4 {
+    font-size: 22px;
     font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
 }
 
-.nav-link {
-    color: white !important;
-    margin-left: 10px;
-    font-weight: 500;
+.course-card hr {
+    border-top: 1px solid #f1f5f9;
+    margin: 15px 0;
 }
 
-    .nav-link:hover {
-        color: #ffd43b !important;
-    }
-
-.stat-card {
-    border: none;
-    border-radius: 20px;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,.1);
-    transition: .3s;
+.course-card p {
+    color: #475569;
+    font-size: 15px;
+    margin-bottom: 8px;
 }
 
-    .stat-card:hover {
-        transform: translateY(-10px);
-    }
-
-    .stat-card h1 {
-        color: #0d6efd;
-        font-size: 48px;
-    }
-
-.hero-section {
-    height: 650px;
-    background-image: linear-gradient( rgba(0,0,0,.55), rgba(0,0,0,.55) ), url('/Content/images/banner.jpg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-    position: relative;
-    overflow: hidden;
+.course-card strong {
+    color: #0f172a;
 }
 
-.hero-overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.hero-content {
-    position: absolute;
-    top: 50%;
-    left: 80px;
-    transform: translateY(-50%);
-    color: white;
-}
-
-    .hero-content h1 {
-        font-size: 70px;
-        font-weight: 800;
-    }
-
-    .hero-content p {
-        font-size: 24px;
-        margin: 25px 0;
-    }
-
-.section-title {
-    text-align: center;
-    margin-bottom: 35px;
-    font-size: 38px;
-    font-weight: bold;
-}
-
-.stat-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.1);
-    transition: .3s;
-}
-
-    .stat-card:hover {
-        transform: translateY(-8px);
-    }
-
-    .stat-card h2 {
-        color: #0d6efd;
-        font-size: 42px;
-        font-weight: bold;
-    }
-
-.course-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.1);
-    transition: .3s;
-}
-
-    .course-card:hover {
-        transform: translateY(-10px);
-    }
-
+/* Teacher Cards */
 .teacher-card {
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,.1);
-    transition: .3s;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-    .teacher-card:hover {
-        transform: translateY(-10px);
-    }
+.teacher-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
 
 .teacher-image {
-    height: 320px;
+    height: 300px;
     width: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
+.teacher-card:hover .teacher-image {
+    transform: scale(1.05);
+}
+
+.teacher-card .card-body {
+    padding: 25px;
+}
+
+.teacher-card h5 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+/* Call to Action Section */
 .cta-section {
-    background: #0d6efd;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
     color: white;
     text-align: center;
-    padding: 60px;
-    border-radius: 20px;
+    padding: 80px 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+    margin-top: 80px;
 }
 
-    .cta-section h2 {
-        margin-bottom: 15px;
+.cta-section h2 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto 35px;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 12px 28px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+    transform: translateY(-1px);
+}
+
+.btn-warning {
+    background-color: #f59e0b;
+    border-color: #f59e0b;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #d97706;
+    border-color: #d97706;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4f46e5;
+    color: white;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 10px;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* Footer style */
+footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 40px 0;
+    margin-top: 80px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.page-heading {
+    margin: 36px 0 24px;
+}
+
+.filter-bar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 220px auto;
+    gap: 12px;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.program-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background: #e2e8f0;
+}
+
+.program-detail {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-top: 36px;
+}
+
+.detail-image {
+    width: 100%;
+    min-height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.detail-grid div {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    background: #fff;
+}
+
+.detail-grid strong,
+.detail-grid span {
+    display: block;
+}
+
+.auth-panel {
+    max-width: 520px;
+    margin: 48px auto;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.avatar-preview {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e2e8f0;
+}
+
+.profile-card {
+    max-width: 420px;
+}
+
+@media (max-width: 992px) {
+    .profile-layout,
+    .program-detail {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-bar {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        height: auto;
+        min-height: 460px;
+        border-radius: 8px;
+    }
+
+    .hero-overlay {
+        padding: 32px 20px;
+    }
+
+    .hero-overlay h1 {
         font-size: 40px;
     }
 
-    .cta-section p {
-        margin-bottom: 25px;
-        font-size: 18px;
+    .detail-grid {
+        grid-template-columns: 1fr;
     }
+}

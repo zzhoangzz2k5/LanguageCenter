@@ -1,23 +1,18 @@
-﻿@model IEnumerable<LanguageCenter.Models.Program>
+@model IEnumerable<LanguageCenter.Models.Program>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Program Management";
 }
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
-        @TempData["Error"]
-    </div>
+    <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
 <h2>Program Management</h2>
 
-<p>
-    <a href="/Admin/CreateProgram"
-       class="btn btn-success">
-        Add Program
-    </a>
-</p>
+<p><a href="/Admin/CreateProgram" class="btn btn-success">Add Program</a></p>
 
 <table class="table table-bordered">
     <tr>
@@ -28,58 +23,25 @@
         <th>Program Status</th>
         <th>Action</th>
     </tr>
-
     @foreach (var item in Model)
     {
         <tr>
-
             <td>@item.ProgramId</td>
-
             <td>@item.ProgramName</td>
-
-            <td>@item.DurationMonths</td>
-
-            <td>@String.Format("{0:N0}", item.Fee)</td>
-
+            <td>@item.DurationMonths months</td>
+            <td>@String.Format("{0:N0}", item.Fee) VND</td>
+            <td>@(item.ProgramStatus ? "Active" : "Inactive")</td>
             <td>
-
-                <a href="/Admin/EditProgram/@item.ProgramId"
-                   class="btn btn-warning btn-sm">
-                    Edit
-                </a>
-
+                <a href="/Admin/EditProgram/@item.ProgramId" class="btn btn-warning btn-sm">Edit</a>
                 @if (item.ProgramStatus)
                 {
-                    <a href="/Admin/DeleteProgram/@item.ProgramId"
-                       class="btn btn-danger btn-sm">
-                        Deactivate
-                    </a>
+                    <a href="/Admin/DeleteProgram/@item.ProgramId" class="btn btn-danger btn-sm">Deactivate</a>
                 }
                 else
                 {
-                    <a href="/Admin/ActivateProgram/@item.ProgramId"
-                       class="btn btn-success btn-sm">
-                        Activate
-                    </a>
-                }
-
-            </td>
-            <td>
-                @if (item.ProgramStatus)
-                {
-                    <span class="label label-success">
-                        Active
-                    </span>
-                }
-                else
-                {
-                    <span class="label label-danger">
-                        Inactive
-                    </span>
+                    <a href="/Admin/ActivateProgram/@item.ProgramId" class="btn btn-success btn-sm">Activate</a>
                 }
             </td>
-
         </tr>
     }
-
 </table>

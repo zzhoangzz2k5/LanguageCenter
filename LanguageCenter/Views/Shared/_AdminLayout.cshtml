@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
 
     @Styles.Render("~/Content/css")
@@ -11,7 +12,7 @@
         body {
             margin: 0;
             background: #f4f6f9;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
         }
 
         .sidebar {
@@ -21,27 +22,28 @@
             background: #1f2937;
             left: 0;
             top: 0;
+            overflow-y: auto;
         }
 
-            .sidebar h3 {
-                color: white;
-                text-align: center;
-                padding: 20px 0;
-                border-bottom: 1px solid #374151;
-            }
+        .sidebar h3 {
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #374151;
+        }
 
-            .sidebar a {
-                display: block;
-                color: #d1d5db;
-                padding: 15px 20px;
-                text-decoration: none;
-                transition: 0.3s;
-            }
+        .sidebar a {
+            display: block;
+            color: #d1d5db;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
 
-                .sidebar a:hover {
-                    background: #374151;
-                    color: white;
-                }
+        .sidebar a:hover {
+            background: #374151;
+            color: white;
+        }
 
         .main {
             margin-left: 250px;
@@ -63,83 +65,38 @@
         }
 
         .logout {
-            color: red !important;
+            color: #f87171 !important;
         }
     </style>
 </head>
 <body>
-
     <div class="sidebar">
-
         <h3>LANGUAGE CENTER</h3>
-
-        <a href="/Admin">
-            📊 Dashboard
-        </a>
-
-        <a href="/Admin/TeacherRequests">
-            👨‍🏫 Teacher Requests
-        </a>
-
-        <a href="/Admin/Students">
-            🎓 Students
-        </a>
-
-        <a href="/Admin/Teachers">
-            👨‍🏫 Teachers
-        </a>
-
-        <a href="/Admin/Programs">
-            📚 Programs
-        </a>
-
-        <a href="/Class">
-            🏫 Classes
-        </a>
-
-        <a href="/Registration">
-            📝 Registrations
-        </a>
-
-        <a href="/Payment">
-            💳 Payments
-        </a>
-
-        <a href="/PlacementTest">
-            📋 Placement Tests
-        </a>
-
-        <a href="/Account/Logout" class="logout">
-            🚪 Logout
-        </a>
-
+        <a href="/Admin">Dashboard</a>
+        <a href="/Admin/RegistrationRequests">Account Requests</a>
+        <a href="/Admin/Students">Students</a>
+        <a href="/Admin/Teachers">Teachers</a>
+        <a href="/Admin/Programs">Programs</a>
+        <a href="/Admin/Classes">Classes</a>
+        <a href="/Admin/Registrations">Registrations</a>
+        <a href="/Admin/Payments">Payments</a>
+        <a href="/Admin/PlacementTests">Placement Tests</a>
+        <a href="/Home">Public Website</a>
+        <a href="/Account/Logout" class="logout">Logout</a>
     </div>
 
     <div class="main">
-
         <div class="topbar">
-
-            <span>
-                Welcome,
-                <strong>@Session["FullName"]</strong>
-            </span>
-
-            <span class="user-info">
-                Admin Panel
-            </span>
-
+            <span>Welcome, <strong>@Session["FullName"]</strong></span>
+            <span class="user-info">Admin Panel</span>
         </div>
 
         <div class="content">
-
             @RenderBody()
-
         </div>
-
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
 </body>
 </html>

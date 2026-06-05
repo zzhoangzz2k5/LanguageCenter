@@ -1,0 +1,45 @@
+@model List<LanguageCenter.Models.UserAccount>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Registration Requests";
+}
+
+<h2>Account Registration Requests</h2>
+
+<p>
+    <button class="btn btn-secondary" onclick="history.back();">Back</button>
+</p>
+
+<table class="table table-striped table-hover mt-3">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Current Status</th>
+            <th class="text-end">Approval Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">@item.FullName</td>
+                    <td class="align-middle">@item.Email</td>
+                    <td class="align-middle"><span class="badge bg-warning text-dark">Pending Approval</span></td>
+                    <td class="text-end">
+                        <a href="/Admin/ApproveAsStudent/@item.UserId" class="btn btn-primary btn-sm me-2">Approve as Student</a>
+                        <a href="/Admin/ApproveAsTeacher/@item.UserId" class="btn btn-success btn-sm">Approve as Teacher</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">No account registration requests are pending approval.</td>
+            </tr>
+        }
+    </tbody>
+</table>

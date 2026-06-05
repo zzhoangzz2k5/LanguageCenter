@@ -1,5 +1,10 @@
-﻿@{
+@using LanguageCenter.Models
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Admin Dashboard";
+    var topClasses = ViewBag.TopClasses as List<Class>;
+    var recentPayments = ViewBag.RecentPayments as List<Payment>;
 }
 
 <h2>Admin Dashboard</h2>
@@ -7,102 +12,72 @@
 @if (ViewBag.PendingTeachers > 0)
 {
     <div class="alert alert-warning">
-        <strong>
-            @ViewBag.PendingTeachers teacher request(s) waiting for approval.
-        </strong>
-
+        <strong>There are @ViewBag.PendingTeachers account registration requests waiting for approval.</strong>
         <br /><br />
-
-        <a href="/Admin/TeacherRequests"
-           class="btn btn-warning">
-            Review Requests
-        </a>
+        <a href="/Admin/RegistrationRequests" class="btn btn-warning">View Requests</a>
     </div>
 }
 
-<div class="row">
-
-    <div class="col-md-3">
-        <div class="panel panel-primary">
-            <div class="panel-body text-center">
-                <h2>@ViewBag.TotalPrograms</h2>
-                <h4>Programs</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="panel panel-success">
-            <div class="panel-body text-center">
-                <h2>@ViewBag.TotalStudents</h2>
-                <h4>Students</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="panel panel-warning">
-            <div class="panel-body text-center">
-                <h2>@ViewBag.TotalTeachers</h2>
-                <h4>Teachers</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="panel panel-danger">
-            <div class="panel-body text-center">
-                <h2>@ViewBag.TotalClasses</h2>
-                <h4>Classes</h4>
-            </div>
-        </div>
-    </div>
-
+<div class="row g-3">
+    <div class="col-md-3"><div class="alert alert-primary text-center"><h3>@ViewBag.TotalPrograms</h3>Total Programs</div></div>
+    <div class="col-md-3"><div class="alert alert-success text-center"><h3>@ViewBag.TotalClasses</h3>Total Classes</div></div>
+    <div class="col-md-3"><div class="alert alert-info text-center"><h3>@ViewBag.TotalStudents</h3>Total Students</div></div>
+    <div class="col-md-3"><div class="alert alert-warning text-center"><h3>@ViewBag.TotalTeachers</h3>Total Teachers</div></div>
 </div>
 
-<div class="row">
-
-    <div class="col-md-4">
-        <div class="alert alert-primary">
-            <h3>@ViewBag.TotalRegistrations</h3>
-            Registrations
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="alert alert-success">
-            <h3>@ViewBag.TotalPayments</h3>
-            Payments
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="alert alert-info">
-            <h3>@ViewBag.TotalPlacementTests</h3>
-            Placement Tests
-        </div>
-    </div>
-
+<div class="row g-3">
+    <div class="col-md-4"><div class="card"><div class="card-body"><h3>@String.Format("{0:N0}", ViewBag.TotalRevenue) VND</h3><p>Total Revenue</p></div></div></div>
+    <div class="col-md-4"><div class="card"><div class="card-body"><h3>@ViewBag.TotalRegistrations</h3><p>Registrations</p></div></div></div>
+    <div class="col-md-4"><div class="card"><div class="card-body"><h3>@ViewBag.TotalPlacementTests</h3><p>Placement Tests</p></div></div></div>
 </div>
+
 <hr />
 
+<h3>Dashboard Enhancement</h3>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Top Classes</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th>Class</th>
+                <th>Students</th>
+                <th>Status</th>
+            </tr>
+            @foreach (var item in topClasses)
+            {
+                <tr>
+                    <td>@item.ClassName</td>
+                    <td>@item.Registrations.Count</td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Revenue Statistics</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th>Payment</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            @foreach (var item in recentPayments)
+            {
+                <tr>
+                    <td>@item.PaymentId</td>
+                    <td>@String.Format("{0:N0}", item.Amount) VND</td>
+                    <td>@item.PaymentStatus</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
 <h3>Quick Actions</h3>
-
 <p>
-
-    <a href="/Admin/TeacherRequests"
-       class="btn btn-warning">
-        Teacher Requests
-    </a>
-
-    <a href="/Admin/Students"
-       class="btn btn-primary">
-        Students
-    </a>
-
-    <a href="/Admin/Teachers"
-       class="btn btn-success">
-        Teachers
-    </a>
-
+    <a href="/Admin/Programs" class="btn btn-primary">Manage Programs</a>
+    <a href="/Admin/Classes" class="btn btn-primary">Manage Classes</a>
+    <a href="/Admin/Registrations" class="btn btn-warning">Manage Registrations</a>
+    <a href="/Admin/Payments" class="btn btn-success">Manage Payments</a>
+    <a href="/Admin/PlacementTests" class="btn btn-info">Manage Placement Tests</a>
 </p>

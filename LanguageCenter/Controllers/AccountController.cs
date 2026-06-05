@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 using System.Configuration;
 using LanguageCenter.Models;
@@ -16,26 +18,28 @@ namespace LanguageCenter.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(string email, string password, bool rememberMe = false)
         {
+            string hashedPassword = HashPassword(password);
+
             var user = db.UserAccounts
                          .FirstOrDefault(x =>
                             x.Email == email &&
-                            x.PasswordHash == password &&
+                            (x.PasswordHash == hashedPassword || x.PasswordHash == password) &&
                             x.IsActive == true);
 
             if (user == null)
             {
-                ViewBag.Error = "Email hoặc mật khẩu không đúng";
+                ViewBag.Error = "Email or password is incorrect.";
                 return View();
             }
 
-            // Teacher đang chờ duyệt
-            if (user.Role == "PendingTeacher")
+            if (user.Role == "Pending" || user.Role == "PendingTeacher")
             {
                 ViewBag.Error =
-                    "Your teacher account is waiting for admin approval.";
+                    "Your account is waiting for admin approval and role assignment.";
 
                 return View();
             }
@@ -43,6 +47,12 @@ namespace LanguageCenter.Controllers
             Session["UserId"] = user.UserId;
             Session["FullName"] = user.FullName;
             Session["Role"] = user.Role;
+
+            if (rememberMe)
+            {
+                Response.Cookies["RememberEmail"].Value = user.Email;
+                Response.Cookies["RememberEmail"].Expires = DateTime.Now.AddDays(14);
+            }
 
             if (user.Role == "Admin")
                 return RedirectToAction("Index", "Admin");
@@ -53,11 +63,17 @@ namespace LanguageCenter.Controllers
             return RedirectToAction("Index", "Student");
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Login");
         }
+
         public ActionResult Register()
         {
             return View();
@@ -65,15 +81,28 @@ namespace LanguageCenter.Controllers
 
         [HttpPost]
         public ActionResult Register(
-     string fullname,
-     string email,
-     string password,
-     string confirmPassword,
-     string role)
+            string fullname,
+            string email,
+            string password,
+            string confirmPassword)
         {
+            if (string.IsNullOrWhiteSpace(fullname) ||
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(password))
+            {
+                ViewBag.Message = "Please enter all required information.";
+                return View();
+            }
+
             if (password != confirmPassword)
             {
-                ViewBag.Message = "Password does not match";
+                ViewBag.Message = "Password confirmation does not match.";
+                return View();
+            }
+
+            if (password.Length < 6)
+            {
+                ViewBag.Message = "Password must be at least 6 characters.";
                 return View();
             }
 
@@ -84,52 +113,39 @@ namespace LanguageCenter.Controllers
 
             if (check != null)
             {
-                ViewBag.Message = "Email already exists";
+                ViewBag.Message = "Email already exists.";
                 return View();
             }
 
             UserAccount user =
                 new UserAccount();
 
-            user.FullName = fullname;
-            user.Email = email;
-            user.PasswordHash = password;
-
-            // Chỉ cho đăng ký Student hoặc Teacher chờ duyệt
-            if (role == "PendingTeacher")
-            {
-                user.Role = "PendingTeacher";
-            }
-            else
-            {
-                user.Role = "Student";
-            }
-
+            user.FullName = fullname.Trim();
+            user.Email = email.Trim();
+            user.PasswordHash = HashPassword(password);
+            user.Role = "Pending";
             user.IsActive = true;
+            user.CreatedDate = DateTime.Now;
 
             db.UserAccounts.InsertOnSubmit(user);
-
             db.SubmitChanges();
-            if (user.Role == "Student")
+
+            ViewBag.Message =
+                "Registration successful! Your request was sent to admin. Please wait for approval.";
+
+            return View();
+        }
+
+        private string HashPassword(string password)
+        {
+            if (password == null)
+                password = "";
+
+            using (var sha = SHA256.Create())
             {
-                Student student = new Student();
-
-                student.UserId = user.UserId;
-
-                db.Students.InsertOnSubmit(student);
-
-                db.SubmitChanges();
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
             }
-
-            if (role == "PendingTeacher")
-            {
-                ViewBag.Message =
-                    "Teacher registration request sent. Please wait for admin approval.";
-
-                return View();
-            }
-
-            return RedirectToAction("Login");
         }
     }
 }

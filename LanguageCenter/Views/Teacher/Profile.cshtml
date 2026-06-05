@@ -1,28 +1,21 @@
-﻿@model IEnumerable<LanguageCenter.Models.UserAccount>
+@model LanguageCenter.Models.UserAccount
+
+@{
+    ViewBag.Title = "Teacher Profile";
+}
+
 <h2>My Profile</h2>
 
+<div class="card profile-card">
+    <div class="card-body text-center">
+        <img src="@(Model == null || string.IsNullOrEmpty(Model.Photo) ? Url.Content("~/Content/images/teacher1.jpg") : Url.Content("~/Content/images/" + Model.Photo))" class="avatar-preview" alt="Teacher photo" />
+        <h4 class="mt-3">@Model.FullName</h4>
+        <p class="text-muted">@Model.Email</p>
 
-@foreach (var t in Model)
-{
-    <div class="col-md-4">
-        <div class="card teacher-card">
-
-            @if (!string.IsNullOrEmpty(t.Photo))
-            {
-                <img src="@Url.Content("~/Content/images/" + t.Photo)"
-                     class="card-img-top" />
-            }
-            else
-            {
-                <img src="@Url.Content("~/Content/images/default-teacher.jpg")"
-                     class="card-img-top" />
-            }
-
-            <div class="card-body">
-                <h5>@t.FullName</h5>
-                <p>@t.Email</p>
-            </div>
-
-        </div>
+        @using (Html.BeginForm("UploadPhoto", "Teacher", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="file" name="photo" class="form-control" accept="image/*" required />
+            <button class="btn btn-primary mt-3">Upload Image</button>
+        }
     </div>
-}
+</div>

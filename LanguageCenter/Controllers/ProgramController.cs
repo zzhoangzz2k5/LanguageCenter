@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Web.Mvc;
 using System.Configuration;
 using LanguageCenter.Models;
@@ -11,7 +11,7 @@ namespace LanguageCenter.Controllers
             new LanguageCenterDataContext(
             ConfigurationManager.ConnectionStrings["LanguageCenterConnectionString"].ConnectionString);
 
-        public ActionResult Index(string search)
+        public ActionResult Index(string search, string level, int page = 1)
         {
             var programs = db.Programs.AsQueryable();
 
@@ -21,7 +21,37 @@ namespace LanguageCenter.Controllers
                     x.ProgramName.Contains(search));
             }
 
-            return View(programs.ToList());
+            if (!string.IsNullOrEmpty(level))
+            {
+                programs = programs.Where(x => x.LevelName == level);
+            }
+
+            int pageSize = 6;
+            int totalItems = programs.Count();
+            int totalPages = (int)System.Math.Ceiling(totalItems / (double)pageSize);
+
+            if (page < 1)
+                page = 1;
+
+            if (totalPages > 0 && page > totalPages)
+                page = totalPages;
+
+            ViewBag.Search = search;
+            ViewBag.Level = level;
+            ViewBag.Levels = db.Programs
+                               .Where(x => x.LevelName != null)
+                               .Select(x => x.LevelName)
+                               .Distinct()
+                               .OrderBy(x => x)
+                               .ToList();
+            ViewBag.Page = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(programs
+                .OrderBy(x => x.ProgramName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList());
         }
 
         public ActionResult Detail(int id)
@@ -29,6 +59,20 @@ namespace LanguageCenter.Controllers
             var program =
                 db.Programs.FirstOrDefault(x =>
                 x.ProgramId == id);
+
+            if (program == null)
+                return HttpNotFound();
+
+            ViewBag.RelatedClasses = db.Classes
+                                      .Where(x => x.ProgramId == id)
+                                      .OrderByDescending(x => x.StartDate)
+                                      .Take(5)
+                                      .ToList();
+
+            ViewBag.RelatedPrograms = db.Programs
+                                       .Where(x => x.ProgramId != id && x.LevelName == program.LevelName)
+                                       .Take(3)
+                                       .ToList();
 
             return View(program);
         }
@@ -63,6 +107,7 @@ namespace LanguageCenter.Controllers
 
             return View(p);
         }
+
         [HttpPost]
         public ActionResult Edit(Program model)
         {
@@ -98,13 +143,10 @@ namespace LanguageCenter.Controllers
             return RedirectToAction("Index");
         }
 
-
         private bool IsAdmin()
         {
             return Session["Role"] != null &&
                    Session["Role"].ToString() == "Admin";
         }
-
-
     }
 }

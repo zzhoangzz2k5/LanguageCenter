@@ -1,7 +1,8 @@
-﻿@model LanguageCenter.Models.StudentViewModel
+@model LanguageCenter.Models.StudentViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "My Profile";
 }
 
 @if (Model == null)
@@ -10,28 +11,86 @@
     return;
 }
 
-<h2>Student Profile</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
 
-<table class="table table-bordered">
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
-    <tr>
-        <th>ID</th>
-        <td>@Model.StudentId</td>
-    </tr>
+<div class="page-heading">
+    <h2>My Profile</h2>
+    <p class="text-muted">View profile, update information, change password, and upload avatar.</p>
+</div>
 
-    <tr>
-        <th>Name</th>
-        <td>@Model.FullName</td>
-    </tr>
+<div class="profile-layout">
+    <div class="card">
+        <div class="card-body text-center">
+            <img src="@(string.IsNullOrEmpty(Model.Avatar) ? Url.Content("~/Content/images/teacher1.jpg") : Url.Content("~/Content/images/" + Model.Avatar))" class="avatar-preview" alt="@Model.FullName" />
+            <h4 class="mt-3">@Model.FullName</h4>
+            <p class="text-muted">@Model.Email</p>
+            <span class="badge bg-success">@(Model.IsActive ? "Active" : "Inactive")</span>
 
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
+            @using (Html.BeginForm("UploadAvatar", "Student", FormMethod.Post, new { enctype = "multipart/form-data", @class = "mt-4" }))
+            {
+                <input type="file" name="avatar" class="form-control" accept="image/*" required />
+                <button class="btn btn-primary mt-3">Upload Avatar</button>
+            }
+        </div>
+    </div>
 
-    <tr>
-        <th>Status</th>
-        <td>@(Model.IsActive ? "Active" : "Inactive")</td>
-    </tr>
+    <div class="card">
+        <div class="card-body">
+            <h4>Update Profile</h4>
+            @using (Html.BeginForm("UpdateProfile", "Student", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label>Full Name</label>
+                    <input name="fullName" value="@Model.FullName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label>Phone</label>
+                    <input name="phone" value="@Model.Phone" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Address</label>
+                    <input name="address" value="@Model.Address" class="form-control" />
+                </div>
+                <button class="btn btn-success">Update Profile</button>
+            }
+        </div>
+    </div>
 
-</table>
+    <div class="card">
+        <div class="card-body">
+            <h4>Change Password</h4>
+            @using (Html.BeginForm("ChangePassword", "Student", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label>Current Password</label>
+                    <input type="password" name="currentPassword" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label>New Password</label>
+                    <input type="password" name="newPassword" class="form-control" minlength="6" required />
+                </div>
+                <div class="mb-3">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirmPassword" class="form-control" minlength="6" required />
+                </div>
+                <button class="btn btn-warning">Change Password</button>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="/Student/RegisterClass" class="btn btn-primary">Register Class</a>
+    <a href="/Student/MyClasses" class="btn btn-outline-primary">My Classes</a>
+    <a href="/Student/Payments" class="btn btn-outline-primary">Payments</a>
+    <a href="/Student/PlacementTests" class="btn btn-outline-primary">Placement Tests</a>
+    <a href="/Student/Consultation" class="btn btn-outline-primary">Consultation</a>
+</div>

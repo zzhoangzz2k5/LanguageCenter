@@ -145,7 +145,6 @@
     </Compile>
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\TeacherViewModel.cs" />
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -297,9 +296,21 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\RegisterClass.cshtml" />
+    <Content Include="Views\Student\MyClasses.cshtml" />
+    <Content Include="Views\Student\Payments.cshtml" />
+    <Content Include="Views\Student\PlacementTests.cshtml" />
+    <Content Include="Views\Student\Consultation.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\Teacher\Dashboard.cshtml" />
+    <Content Include="Views\Teacher\MyClasses.cshtml" />
+    <Content Include="Views\Teacher\ClassStudents.cshtml" />
+    <Content Include="Views\Teacher\Materials.cshtml" />
+    <Content Include="Views\Teacher\PlacementResults.cshtml" />
+    <Content Include="Views\Teacher\Feedback.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Admin\TeacherRequests.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
@@ -307,8 +318,17 @@
     <Content Include="Views\Program\Create.cshtml" />
     <Content Include="Views\Program\Edit.cshtml" />
     <Content Include="Views\Admin\Students.cshtml" />
+    <Content Include="Views\Admin\EditStudent.cshtml" />
     <Content Include="Views\Admin\Teachers.cshtml" />
+    <Content Include="Views\Admin\CreateTeacher.cshtml" />
+    <Content Include="Views\Admin\EditTeacher.cshtml" />
     <Content Include="Views\Admin\Programs.cshtml" />
+    <Content Include="Views\Admin\Classes.cshtml" />
+    <Content Include="Views\Admin\CreateClass.cshtml" />
+    <Content Include="Views\Admin\EditClass.cshtml" />
+    <Content Include="Views\Admin\Registrations.cshtml" />
+    <Content Include="Views\Admin\Payments.cshtml" />
+    <Content Include="Views\Admin\PlacementTests.cshtml" />
     <Content Include="Views\Admin\CreateProgram.cshtml" />
     <Content Include="Views\Admin\EditProgram.cshtml" />
     <Content Include="Views\Program\Detail.cshtml" />
