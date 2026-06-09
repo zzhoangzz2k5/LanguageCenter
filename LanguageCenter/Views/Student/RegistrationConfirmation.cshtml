@@ -1,0 +1,63 @@
+@model LanguageCenter.Models.Registration
+@using LanguageCenter.Models
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Registration Confirmation";
+    var payment = ViewBag.Payment as Payment;
+}
+
+<div class="page-heading">
+    <h2>Registration Submitted</h2>
+    <p class="text-muted">Your registration and pending payment record were saved successfully.</p>
+</div>
+
+<div class="alert alert-success">
+    Registration reference: <strong>#@Model.RegistrationId</strong>
+</div>
+
+@if (TempData["EmailSent"] != null && (bool)TempData["EmailSent"])
+{
+    <div class="alert alert-info">A confirmation email was sent to your registered email address.</div>
+}
+else if (TempData["EmailWarning"] != null)
+{
+    <div class="alert alert-warning">@TempData["EmailWarning"]</div>
+}
+else
+{
+    <div class="alert alert-secondary">Email notification is currently disabled. Your registration is still valid.</div>
+}
+
+<div class="card p-4 mb-4">
+    <h4>Registration Details</h4>
+    <dl class="row mb-0">
+        <dt class="col-sm-4">Class</dt>
+        <dd class="col-sm-8">@(Model.Class == null ? "Updating" : Model.Class.ClassName)</dd>
+
+        <dt class="col-sm-4">Program</dt>
+        <dd class="col-sm-8">@(Model.Class == null || Model.Class.Program == null ? "Updating" : Model.Class.Program.ProgramName)</dd>
+
+        <dt class="col-sm-4">Schedule</dt>
+        <dd class="col-sm-8">
+            @(Model.Class != null && Model.Class.StartDate.HasValue ? Model.Class.StartDate.Value.ToString("dd/MM/yyyy") : "Updating")
+            -
+            @(Model.Class != null && Model.Class.EndDate.HasValue ? Model.Class.EndDate.Value.ToString("dd/MM/yyyy") : "Updating")
+        </dd>
+
+        <dt class="col-sm-4">Room</dt>
+        <dd class="col-sm-8">@(Model.Class == null ? "Updating" : Model.Class.Room)</dd>
+
+        <dt class="col-sm-4">Registration Status</dt>
+        <dd class="col-sm-8"><span class="badge bg-warning text-dark">@Model.Status</span></dd>
+
+        <dt class="col-sm-4">Amount</dt>
+        <dd class="col-sm-8">@(payment == null ? "Updating" : String.Format("{0:N0} VND", payment.Amount))</dd>
+
+        <dt class="col-sm-4">Payment Status</dt>
+        <dd class="col-sm-8">@(payment == null ? "Updating" : payment.PaymentStatus)</dd>
+    </dl>
+</div>
+
+<a href="/Student/MyClasses" class="btn btn-primary">View My Classes</a>
+<a href="/Student/Payments" class="btn btn-outline-success">View Payments</a>

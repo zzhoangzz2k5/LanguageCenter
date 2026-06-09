@@ -1,4 +1,5 @@
 using LanguageCenter.Models;
+using LanguageCenter.Services;
 using System;
 using System.Configuration;
 using System.IO;
@@ -160,24 +161,64 @@ namespace LanguageCenter.Controllers
 
             bool exists = db.Registrations.Any(x => x.StudentId == student.StudentId && x.ClassId == classId && x.Status != "Cancelled");
 
-            if (!exists)
-            {
-                Registration registration = new Registration();
-                registration.StudentId = student.StudentId;
-                registration.ClassId = classId;
-                registration.RegistrationDate = DateTime.Now;
-                registration.Status = "Pending";
-
-                db.Registrations.InsertOnSubmit(registration);
-                db.SubmitChanges();
-                TempData["Message"] = "Class registration submitted. Please wait for confirmation.";
-            }
-            else
+            if (exists)
             {
                 TempData["Error"] = "You have already registered for this class.";
+                return RedirectToAction("RegisterClass", new { classId = classId });
             }
 
-            return RedirectToAction("MyClasses");
+            Registration registration = new Registration();
+            registration.StudentId = student.StudentId;
+            registration.ClassId = classId;
+            registration.RegistrationDate = DateTime.Now;
+            registration.Status = "Pending";
+
+            Payment payment = new Payment();
+            payment.Registration = registration;
+            payment.Amount = classItem.Program == null ? 0 : classItem.Program.Fee;
+            payment.PaymentMethod = "Pending";
+            payment.PaymentStatus = "Pending";
+            payment.PaymentDate = null;
+
+            db.Registrations.InsertOnSubmit(registration);
+            db.Payments.InsertOnSubmit(payment);
+            db.SubmitChanges();
+
+            var user = db.UserAccounts.FirstOrDefault(x => x.UserId == student.UserId);
+            string emailError = null;
+            bool emailSent = user != null &&
+                             EmailService.TrySendClassRegistration(
+                                 user.Email,
+                                 user.FullName,
+                                 classItem.ClassName,
+                                 classItem.StartDate,
+                                 classItem.Room,
+                                 out emailError);
+
+            TempData["EmailSent"] = emailSent;
+            if (!emailSent && EmailService.IsConfigured && !string.IsNullOrWhiteSpace(emailError))
+                TempData["EmailWarning"] = "Registration was saved, but the confirmation email could not be sent.";
+
+            return RedirectToAction("RegistrationConfirmation", new { id = registration.RegistrationId });
+        }
+
+        public ActionResult RegistrationConfirmation(int id)
+        {
+            var student = GetCurrentStudent();
+
+            if (student == null)
+                return RedirectToAction("Login", "Account");
+
+            var registration = db.Registrations
+                                 .FirstOrDefault(x =>
+                                     x.RegistrationId == id &&
+                                     x.StudentId == student.StudentId);
+
+            if (registration == null)
+                return HttpNotFound();
+
+            ViewBag.Payment = db.Payments.FirstOrDefault(x => x.RegistrationId == registration.RegistrationId);
+            return View(registration);
         }
 
         public ActionResult MyClasses()

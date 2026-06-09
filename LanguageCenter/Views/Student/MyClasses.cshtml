@@ -25,6 +25,7 @@
             <th>Teacher</th>
             <th>Registration Date</th>
             <th>Registration Status</th>
+            <th>Detail</th>
         </tr>
         @foreach (var item in Model)
         {
@@ -39,6 +40,7 @@
                 <td>@(item.Class != null && item.Class.Teacher != null && item.Class.Teacher.UserAccount != null ? item.Class.Teacher.UserAccount.FullName : "Updating")</td>
                 <td>@(item.RegistrationDate.HasValue ? item.RegistrationDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
                 <td>@item.Status</td>
+                <td><a href="/Student/RegistrationConfirmation/@item.RegistrationId" class="btn btn-outline-primary btn-sm">View</a></td>
             </tr>
         }
     </table>
