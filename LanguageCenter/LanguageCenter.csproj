@@ -143,6 +143,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LanguageCenter.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\FunctionalViewModels.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\TeacherViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -333,6 +334,8 @@
     <Content Include="Views\Admin\EditProgram.cshtml" />
     <Content Include="Views\Program\Detail.cshtml" />
     <Content Include="Views\Teacher\Profile.cshtml" />
+    <Content Include="Views\Teacher\Report.cshtml" />
+    <Content Include="Views\Admin\ProgramTypes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

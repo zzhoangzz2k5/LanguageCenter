@@ -28,11 +28,21 @@
                 <a href="/Admin/EditStudent/@item.StudentId" class="btn btn-warning btn-sm">Edit</a>
                 @if (item.IsActive)
                 {
-                    <a href="/Admin/DeactivateStudent/@item.StudentId" class="btn btn-danger btn-sm">Deactivate</a>
+                    using (Html.BeginForm("DeactivateStudent", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.StudentId" />
+                        <button class="btn btn-danger btn-sm">Deactivate</button>
+                    }
                 }
                 else
                 {
-                    <a href="/Admin/ActivateStudent/@item.StudentId" class="btn btn-success btn-sm">Activate</a>
+                    using (Html.BeginForm("ActivateStudent", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.StudentId" />
+                        <button class="btn btn-success btn-sm">Activate</button>
+                    }
                 }
             </td>
         </tr>

@@ -1,0 +1,27 @@
+﻿<div class="col-xl-3 col-xxl-2 d-none d-xl-block">
+    <div class="xc-banner-one__cat">
+        <ul>
+            @if (ViewBag.Categories != null)
+            {
+                foreach (var category in ViewBag.Categories)
+                {
+                    <li>
+                        <a href="#">@category.Name</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li><a href="#">Fashion & Accessories</a></li>
+                <li><a href="#">Sports & Entertainment</a></li>
+                <li><a href="#">Health & Beauty</a></li>
+                <li><a href="#">Digital & Electronics</a></li>
+                <li><a href="#">Tools, Equipment</a></li>
+                <li><a href="#">Sports and Outdoor</a></li>
+                <li><a href="#">Travel & Accessories</a></li>
+                <li><a href="#">Machinery tools</a></li>
+                <li><a href="#">More category</a></li>
+            }
+        </ul>
+    </div>
+</div>

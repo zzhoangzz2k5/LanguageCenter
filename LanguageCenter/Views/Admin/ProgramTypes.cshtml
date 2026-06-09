@@ -1,0 +1,66 @@
+@model IEnumerable<LanguageCenter.Models.ProgramTypeViewModel>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Program Types";
+}
+
+<h2>Program Type Management</h2>
+<p class="text-muted">Types are used by the Level field of each program.</p>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@using (Html.BeginForm("CreateProgramType", "Admin", FormMethod.Post, new { @class = "card p-3 mb-4" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="d-flex gap-2">
+        <input name="name" class="form-control" placeholder="New program type (for example: Beginner)" required />
+        <button class="btn btn-success">Add Type</button>
+    </div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Programs</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @using (Html.BeginForm("RenameProgramType", "Admin", FormMethod.Post, new { @class = "d-flex gap-2" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="oldName" value="@item.Name" />
+                    <input name="newName" value="@item.Name" class="form-control" required />
+                    <button class="btn btn-warning btn-sm">Rename</button>
+                }
+            </td>
+            <td>@item.ProgramCount</td>
+            <td>@(item.IsActive ? "Active" : "Inactive")</td>
+            <td>
+                @using (Html.BeginForm("ToggleProgramType", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="name" value="@item.Name" />
+                    <button class="btn btn-sm @(item.IsActive ? "btn-secondary" : "btn-success")">@(item.IsActive ? "Deactivate" : "Activate")</button>
+                }
+                @using (Html.BeginForm("DeleteProgramType", "Admin", FormMethod.Post, new { @class = "d-inline", onsubmit = "return confirm('Delete this unused type?');" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="name" value="@item.Name" />
+                    <button class="btn btn-danger btn-sm" @(item.ProgramCount > 0 ? "disabled" : "")>Delete</button>
+                }
+            </td>
+        </tr>
+    }
+</table>

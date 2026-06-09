@@ -27,12 +27,19 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UpdateProfile(string fullName, string phone, string address)
         {
             var student = GetCurrentStudent();
 
             if (student == null)
                 return RedirectToAction("Login", "Account");
+
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                TempData["Error"] = "Full name is required.";
+                return RedirectToAction("Index");
+            }
 
             var user = db.UserAccounts.FirstOrDefault(x => x.UserId == student.UserId);
 
@@ -49,6 +56,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
             var student = GetCurrentStudent();
@@ -79,6 +87,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UploadAvatar(HttpPostedFileBase avatar)
         {
             var student = GetCurrentStudent();
@@ -86,18 +95,23 @@ namespace LanguageCenter.Controllers
             if (student == null)
                 return RedirectToAction("Login", "Account");
 
-            if (avatar != null && avatar.ContentLength > 0)
+            string error = ValidateImage(avatar);
+            if (error != null)
             {
-                string extension = Path.GetExtension(avatar.FileName);
-                string fileName = "student-" + student.StudentId + extension;
-                string folder = Server.MapPath("~/Content/images/");
-
-                avatar.SaveAs(Path.Combine(folder, fileName));
-
-                student.Avatar = fileName;
-                db.SubmitChanges();
-                TempData["Message"] = "Avatar uploaded successfully.";
+                TempData["Error"] = error;
+                return RedirectToAction("Index");
             }
+
+            string extension = Path.GetExtension(avatar.FileName).ToLowerInvariant();
+            string fileName = "student-" + student.StudentId + extension;
+            string folder = Server.MapPath("~/Content/images/");
+            Directory.CreateDirectory(folder);
+
+            avatar.SaveAs(Path.Combine(folder, fileName));
+
+            student.Avatar = fileName;
+            db.SubmitChanges();
+            TempData["Message"] = "Avatar uploaded successfully.";
 
             return RedirectToAction("Index");
         }
@@ -119,6 +133,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult RegisterClass(int classId, string note)
         {
             var student = GetCurrentStudent();
@@ -126,7 +141,24 @@ namespace LanguageCenter.Controllers
             if (student == null)
                 return RedirectToAction("Login", "Account");
 
-            bool exists = db.Registrations.Any(x => x.StudentId == student.StudentId && x.ClassId == classId);
+            var classItem = db.Classes.FirstOrDefault(x => x.ClassId == classId);
+            if (classItem == null)
+                return HttpNotFound();
+
+            if (classItem.Status == "Inactive" || classItem.Status == "Closed" || classItem.Status == "Full")
+            {
+                TempData["Error"] = "This class is not open for registration.";
+                return RedirectToAction("RegisterClass");
+            }
+
+            int occupied = db.Registrations.Count(x => x.ClassId == classId && x.Status != "Cancelled");
+            if (classItem.Capacity.HasValue && occupied >= classItem.Capacity.Value)
+            {
+                TempData["Error"] = "This class has reached its capacity.";
+                return RedirectToAction("RegisterClass");
+            }
+
+            bool exists = db.Registrations.Any(x => x.StudentId == student.StudentId && x.ClassId == classId && x.Status != "Cancelled");
 
             if (!exists)
             {
@@ -193,12 +225,19 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PlacementTests(DateTime testDate, TimeSpan testTime, string suggestedLevel)
         {
             var student = GetCurrentStudent();
 
             if (student == null)
                 return RedirectToAction("Login", "Account");
+
+            if (testDate.Date < DateTime.Today)
+            {
+                TempData["Error"] = "Test date cannot be in the past.";
+                return RedirectToAction("PlacementTests");
+            }
 
             PlacementTest test = new PlacementTest();
             test.StudentId = student.StudentId;
@@ -228,12 +267,19 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Consultation(string question, string contactInfo)
         {
             var student = GetCurrentStudent();
 
             if (student == null)
                 return RedirectToAction("Login", "Account");
+
+            if (string.IsNullOrWhiteSpace(question) || string.IsNullOrWhiteSpace(contactInfo))
+            {
+                TempData["Error"] = "Question and contact information are required.";
+                return RedirectToAction("Consultation");
+            }
 
             Consultation consultation = new Consultation();
             consultation.StudentId = student.StudentId;
@@ -249,47 +295,11 @@ namespace LanguageCenter.Controllers
             return RedirectToAction("Consultation");
         }
 
-        public ActionResult Activate(int id)
-        {
-            var student =
-                db.Students.FirstOrDefault(x => x.StudentId == id);
-
-            if (student != null)
-            {
-                var user =
-                    db.UserAccounts.FirstOrDefault(x =>
-                    x.UserId == student.UserId);
-
-                user.IsActive = true;
-
-                db.SubmitChanges();
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Deactivate(int id)
-        {
-            var student =
-                db.Students.FirstOrDefault(x => x.StudentId == id);
-
-            if (student != null)
-            {
-                var user =
-                    db.UserAccounts.FirstOrDefault(x =>
-                    x.UserId == student.UserId);
-
-                user.IsActive = false;
-
-                db.SubmitChanges();
-            }
-
-            return RedirectToAction("Index");
-        }
-
         private Student GetCurrentStudent()
         {
-            if (Session["UserId"] == null)
+            if (Session["UserId"] == null ||
+                Session["Role"] == null ||
+                Session["Role"].ToString() != "Student")
                 return null;
 
             int userId = Convert.ToInt32(Session["UserId"]);
@@ -298,7 +308,9 @@ namespace LanguageCenter.Controllers
 
         private StudentViewModel GetCurrentStudentViewModel()
         {
-            if (Session["UserId"] == null)
+            if (Session["UserId"] == null ||
+                Session["Role"] == null ||
+                Session["Role"].ToString() != "Student")
                 return null;
 
             int userId = Convert.ToInt32(Session["UserId"]);
@@ -329,6 +341,19 @@ namespace LanguageCenter.Controllers
                 byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
             }
+        }
+
+        private string ValidateImage(HttpPostedFileBase image)
+        {
+            if (image == null || image.ContentLength <= 0)
+                return "Please select an image.";
+
+            if (image.ContentLength > 5 * 1024 * 1024)
+                return "The image size must not exceed 5 MB.";
+
+            string extension = Path.GetExtension(image.FileName).ToLowerInvariant();
+            string[] allowed = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            return allowed.Contains(extension) ? null : "Only JPG, PNG, GIF, and WEBP images are allowed.";
         }
     }
 }

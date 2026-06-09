@@ -29,8 +29,18 @@
                     <td class="align-middle">@item.Email</td>
                     <td class="align-middle"><span class="badge bg-warning text-dark">Pending Approval</span></td>
                     <td class="text-end">
-                        <a href="/Admin/ApproveAsStudent/@item.UserId" class="btn btn-primary btn-sm me-2">Approve as Student</a>
-                        <a href="/Admin/ApproveAsTeacher/@item.UserId" class="btn btn-success btn-sm">Approve as Teacher</a>
+                        @using (Html.BeginForm("ApproveAsStudent", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.UserId" />
+                            <button class="btn btn-primary btn-sm me-2">Approve as Student</button>
+                        }
+                        @using (Html.BeginForm("ApproveAsTeacher", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.UserId" />
+                            <button class="btn btn-success btn-sm">Approve as Teacher</button>
+                        }
                     </td>
                 </tr>
             }

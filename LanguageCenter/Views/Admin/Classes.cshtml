@@ -32,7 +32,12 @@
             <td>@item.Status</td>
             <td>
                 <a href="/Admin/EditClass/@item.ClassId" class="btn btn-warning btn-sm">Edit</a>
-                <a href="/Admin/DeleteClass/@item.ClassId" class="btn btn-danger btn-sm">Deactivate</a>
+                @using (Html.BeginForm("DeleteClass", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@item.ClassId" />
+                    <button class="btn btn-danger btn-sm">Deactivate</button>
+                }
             </td>
         </tr>
     }

@@ -1,0 +1,18 @@
+@model LanguageCenter.Models.TeacherViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Edit Teacher";
+}
+
+<h2>Edit Teacher</h2>
+
+@using (Html.BeginForm("EditTeacher", "Admin", FormMethod.Post, new { @class = "card p-4" }))
+{
+    <input type="hidden" name="teacherId" value="@Model.TeacherId" />
+    <div class="mb-3"><label>Full Name</label><input name="fullName" value="@Model.FullName" class="form-control" required /></div>
+    <div class="mb-3"><label>Email</label><input type="email" name="email" value="@Model.Email" class="form-control" required /></div>
+    <div class="mb-3"><label>Specialty</label><input name="specialty" value="@Model.Specialty" class="form-control" required /></div>
+    <div class="mb-3"><label>Experience Years</label><input type="number" name="experienceYears" value="@Model.ExperienceYears" class="form-control" min="0" /></div>
+    <button class="btn btn-success">Save</button>
+}

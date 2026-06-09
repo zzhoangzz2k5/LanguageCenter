@@ -12,7 +12,10 @@
 
 <h2>Program Management</h2>
 
-<p><a href="/Admin/CreateProgram" class="btn btn-success">Add Program</a></p>
+<p>
+    <a href="/Admin/CreateProgram" class="btn btn-success">Add Program</a>
+    <a href="/Admin/ProgramTypes" class="btn btn-outline-primary">Manage Program Types</a>
+</p>
 
 <table class="table table-bordered">
     <tr>
@@ -35,11 +38,21 @@
                 <a href="/Admin/EditProgram/@item.ProgramId" class="btn btn-warning btn-sm">Edit</a>
                 @if (item.ProgramStatus)
                 {
-                    <a href="/Admin/DeleteProgram/@item.ProgramId" class="btn btn-danger btn-sm">Deactivate</a>
+                    using (Html.BeginForm("DeleteProgram", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.ProgramId" />
+                        <button class="btn btn-danger btn-sm">Deactivate</button>
+                    }
                 }
                 else
                 {
-                    <a href="/Admin/ActivateProgram/@item.ProgramId" class="btn btn-success btn-sm">Activate</a>
+                    using (Html.BeginForm("ActivateProgram", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.ProgramId" />
+                        <button class="btn btn-success btn-sm">Activate</button>
+                    }
                 }
             </td>
         </tr>

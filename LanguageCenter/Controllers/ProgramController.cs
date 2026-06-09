@@ -86,6 +86,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Program p)
         {
             if (!IsAdmin())
@@ -109,6 +110,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Program model)
         {
             if (!IsAdmin())
@@ -128,6 +130,8 @@ namespace LanguageCenter.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             if (!IsAdmin())
@@ -136,7 +140,13 @@ namespace LanguageCenter.Controllers
             var p = db.Programs
                       .FirstOrDefault(x => x.ProgramId == id);
 
-            db.Programs.DeleteOnSubmit(p);
+            if (p == null)
+                return HttpNotFound();
+
+            if (db.Classes.Any(x => x.ProgramId == id))
+                p.ProgramStatus = false;
+            else
+                db.Programs.DeleteOnSubmit(p);
 
             db.SubmitChanges();
 

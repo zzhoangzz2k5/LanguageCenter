@@ -34,6 +34,21 @@
 <hr />
 
 <h3>Dashboard Enhancement</h3>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h4>Registration Status Chart</h4>
+            <canvas id="registrationChart" height="170"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h4>Revenue Chart</h4>
+            <canvas id="revenueChart" height="170"></canvas>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-6">
         <h4>Top Classes</h4>
@@ -76,8 +91,31 @@
 <h3>Quick Actions</h3>
 <p>
     <a href="/Admin/Programs" class="btn btn-primary">Manage Programs</a>
+    <a href="/Admin/ProgramTypes" class="btn btn-outline-primary">Program Types</a>
     <a href="/Admin/Classes" class="btn btn-primary">Manage Classes</a>
     <a href="/Admin/Registrations" class="btn btn-warning">Manage Registrations</a>
     <a href="/Admin/Payments" class="btn btn-success">Manage Payments</a>
     <a href="/Admin/PlacementTests" class="btn btn-info">Manage Placement Tests</a>
 </p>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+    if (window.Chart) {
+        new Chart(document.getElementById('registrationChart'), {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(ViewBag.RegistrationChartLabels),
+                datasets: [{ data: @Html.Raw(ViewBag.RegistrationChartValues), backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d'] }]
+            }
+        });
+
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(ViewBag.RevenueChartLabels),
+                datasets: [{ label: 'Revenue (VND)', data: @Html.Raw(ViewBag.RevenueChartValues), backgroundColor: '#198754' }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+    }
+</script>

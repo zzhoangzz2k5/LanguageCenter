@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Language Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow">
+        <div class="container">
+            @Html.ActionLink("Language Center", "Index", "Home", null, new { @class = "navbar-brand" })
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Programs", "Index", "Program", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item"><a href="/Student/RegisterClass" class="nav-link">Classes</a></li>
+                    <li class="nav-item">@Html.ActionLink("Teachers", "Index", "Teacher", null, new { @class = "nav-link" })</li>
+
+                    @if (Session["Role"] != null && Session["Role"].ToString() == "Student")
+                    {
+                        <li class="nav-item"><a href="/Student" class="nav-link">My Profile</a></li>
+                        <li class="nav-item"><a href="/Student/MyClasses" class="nav-link">My Classes</a></li>
+                    }
+
+                    @if (Session["Role"] != null && Session["Role"].ToString() == "Teacher")
+                    {
+                        <li class="nav-item"><a href="/Teacher/Dashboard" class="nav-link">Teacher Dashboard</a></li>
+                    }
+
+                    @if (Session["Role"] != null && Session["Role"].ToString() == "Admin")
+                    {
+                        <li class="nav-item"><a href="/Admin" class="nav-link">Admin</a></li>
+                    }
+                </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    @if (Session["UserId"] == null)
+                    {
+                        <li class="nav-item">@Html.ActionLink("Login", "Login", "Account", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { @class = "nav-link" })</li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link">Hello @Session["FullName"]</span>
+                        </li>
+                        <li class="nav-item">@Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "nav-link" })</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+
+        <hr />
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Language Center Management System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

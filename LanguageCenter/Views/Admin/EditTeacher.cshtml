@@ -9,6 +9,7 @@
 
 @using (Html.BeginForm("EditTeacher", "Admin", FormMethod.Post, new { @class = "card p-4" }))
 {
+    @Html.AntiForgeryToken()
     <input type="hidden" name="teacherId" value="@Model.TeacherId" />
     <div class="mb-3"><label>Full Name</label><input name="fullName" value="@Model.FullName" class="form-control" required /></div>
     <div class="mb-3"><label>Email</label><input type="email" name="email" value="@Model.Email" class="form-control" required /></div>

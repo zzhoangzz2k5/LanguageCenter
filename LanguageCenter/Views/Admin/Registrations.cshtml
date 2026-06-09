@@ -6,6 +6,7 @@
 }
 
 <h2>Manage Registrations</h2>
+<p><a href="/Admin/ExportRegistrationsCsv" class="btn btn-success">Export CSV Report</a></p>
 
 <table class="table table-bordered">
     <tr>
@@ -23,8 +24,20 @@
             <td>@(item.RegistrationDate.HasValue ? item.RegistrationDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
             <td>@item.Status</td>
             <td>
-                <a href="/Admin/UpdateRegistrationStatus/@item.RegistrationId?status=Confirmed" class="btn btn-success btn-sm">Confirm</a>
-                <a href="/Admin/UpdateRegistrationStatus/@item.RegistrationId?status=Cancelled" class="btn btn-danger btn-sm">Cancel Registration</a>
+                @using (Html.BeginForm("UpdateRegistrationStatus", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@item.RegistrationId" />
+                    <input type="hidden" name="status" value="Confirmed" />
+                    <button class="btn btn-success btn-sm">Confirm</button>
+                }
+                @using (Html.BeginForm("UpdateRegistrationStatus", "Admin", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@item.RegistrationId" />
+                    <input type="hidden" name="status" value="Cancelled" />
+                    <button class="btn btn-danger btn-sm">Cancel Registration</button>
+                }
             </td>
         </tr>
     }

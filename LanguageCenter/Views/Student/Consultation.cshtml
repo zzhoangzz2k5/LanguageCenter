@@ -11,9 +11,14 @@
 {
     <div class="alert alert-success">@TempData["Message"]</div>
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
 @using (Html.BeginForm("Consultation", "Student", FormMethod.Post, new { @class = "card p-4 mb-4" }))
 {
+    @Html.AntiForgeryToken()
     <div class="mb-3">
         <label>Question</label>
         <textarea name="question" class="form-control" rows="4" required></textarea>

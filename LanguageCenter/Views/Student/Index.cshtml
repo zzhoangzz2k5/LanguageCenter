@@ -36,6 +36,7 @@
 
             @using (Html.BeginForm("UploadAvatar", "Student", FormMethod.Post, new { enctype = "multipart/form-data", @class = "mt-4" }))
             {
+                @Html.AntiForgeryToken()
                 <input type="file" name="avatar" class="form-control" accept="image/*" required />
                 <button class="btn btn-primary mt-3">Upload Avatar</button>
             }
@@ -47,6 +48,7 @@
             <h4>Update Profile</h4>
             @using (Html.BeginForm("UpdateProfile", "Student", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label>Full Name</label>
                     <input name="fullName" value="@Model.FullName" class="form-control" required />
@@ -69,6 +71,7 @@
             <h4>Change Password</h4>
             @using (Html.BeginForm("ChangePassword", "Student", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label>Current Password</label>
                     <input type="password" name="currentPassword" class="form-control" required />

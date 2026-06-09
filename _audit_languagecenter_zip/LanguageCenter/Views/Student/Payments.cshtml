@@ -1,0 +1,30 @@
+@model IEnumerable<LanguageCenter.Models.Payment>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Payments";
+}
+
+<h2>Payment</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            <th>Payment Information</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+            <th>Payment Method</th>
+            <th>Payment Status</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.Registration != null && item.Registration.Class != null ? item.Registration.Class.ClassName : "Class registration")</td>
+                <td>@String.Format("{0:N0}", item.Amount) VND</td>
+                <td>@(item.PaymentDate.HasValue ? item.PaymentDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+                <td>@item.PaymentMethod</td>
+                <td>@item.PaymentStatus</td>
+            </tr>
+        }
+    </table>
+</div>

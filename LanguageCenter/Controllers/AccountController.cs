@@ -20,6 +20,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(string email, string password, bool rememberMe = false)
         {
             string hashedPassword = HashPassword(password);
@@ -27,13 +28,18 @@ namespace LanguageCenter.Controllers
             var user = db.UserAccounts
                          .FirstOrDefault(x =>
                             x.Email == email &&
-                            (x.PasswordHash == hashedPassword || x.PasswordHash == password) &&
                             x.IsActive == true);
 
-            if (user == null)
+            if (user == null || (user.PasswordHash != hashedPassword && user.PasswordHash != password))
             {
                 ViewBag.Error = "Email or password is incorrect.";
                 return View();
+            }
+
+            if (user.PasswordHash == password)
+            {
+                user.PasswordHash = hashedPassword;
+                db.SubmitChanges();
             }
 
             if (user.Role == "Pending" || user.Role == "PendingTeacher")
@@ -80,6 +86,7 @@ namespace LanguageCenter.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(
             string fullname,
             string email,

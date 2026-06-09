@@ -1,0 +1,44 @@
+@model IEnumerable<LanguageCenter.Models.Consultation>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Consultation Request";
+}
+
+<h2>Consultation Request</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@using (Html.BeginForm("Consultation", "Student", FormMethod.Post, new { @class = "card p-4 mb-4" }))
+{
+    <div class="mb-3">
+        <label>Question</label>
+        <textarea name="question" class="form-control" rows="4" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label>Contact Information</label>
+        <input name="contactInfo" class="form-control" required />
+    </div>
+    <button class="btn btn-success">Send Request</button>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Question</th>
+        <th>Contact Information</th>
+        <th>Request Status</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Question</td>
+            <td>@item.ContactInfo</td>
+            <td>@item.RequestStatus</td>
+            <td>@(item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+        </tr>
+    }
+</table>

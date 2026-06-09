@@ -1,0 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace PhoneShop.Dtos.Product;
+
+public class CreateProductRequest
+{
+    [Required(ErrorMessage = "Please input Product Name")]
+    public string? Name { get; set; }
+
+    public string? Description { get; set; }
+
+    [Range(0, double.MaxValue, ErrorMessage = "Price must be a non-negative value")]
+    public decimal? Price { get; set; }
+
+    [Range(0, double.MaxValue, ErrorMessage = "Sale price must be a non-negative value")]
+    public decimal? PriceSale { get; set; }
+
+    public IFormFile? Photo { get; set; }
+    public int? CategoryId { get; set; }
+    public bool Featured { get; set; }
+}

@@ -1,0 +1,63 @@
+body {
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+.owl-carousel {
+  direction: ltr;
+}
+
+.owl-carousel .owl-nav,
+.owl-carousel .owl-dots,
+.owl-carousel .owl-item {
+  direction: rtl;
+}
+
+.bootstrap-select .dropdown-toggle .filter-option {
+  text-align: right;
+}
+
+.list-unstyled {
+  padding-right: 0;
+}
+
+.project-one .text-end {
+  text-align: left !important;
+}
+
+.portfolio-card__link {
+  clip-path: none;
+}
+
+.swiftcart-btn em {
+  display: none;
+}
+
+.swiftcart-btn {
+  background-color: var(--swiftcart-base);
+}
+
+.swiftcart-btn-white:hover {
+  background-color: var(--swiftcart-base);
+}
+
+.main-slider-one__bg {
+  background-size: inherit;
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.testimonials-one__top__left .shape-one {
+  transform: rotateY(180deg);
+}
+
+.service-card__content .swiftcart-btn {
+  background-color: var(--swiftcart-base);
+}
+
+@media (max-width: 767px) {
+  .project-one .text-end {
+    text-align: right !important;
+  }
+}
+/*# sourceMappingURL=swiftcart-custom-rtl.css.map */

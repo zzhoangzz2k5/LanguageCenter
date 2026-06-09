@@ -1,0 +1,87 @@
+@model LanguageCenter.Models.Program
+@using LanguageCenter.Models
+
+@{
+    ViewBag.Title = "Program Detail";
+    var classes = ViewBag.RelatedClasses as List<Class>;
+    var relatedPrograms = ViewBag.RelatedPrograms as List<Program>;
+}
+
+<div class="program-detail">
+    <img src="@(string.IsNullOrEmpty(Model.ProgramImage) ? Url.Content("~/Content/images/banner.jpg") : Url.Content("~/Content/images/" + Model.ProgramImage))" class="detail-image" alt="@Model.ProgramName" />
+
+    <div>
+        <h2>@Model.ProgramName</h2>
+        <p class="text-muted">@Model.Description</p>
+
+        <div class="detail-grid">
+            <div><strong>Level</strong><span>@Model.LevelName</span></div>
+            <div><strong>Duration</strong><span>@Model.DurationMonths months</span></div>
+            <div><strong>Fee</strong><span>@String.Format("{0:N0}", Model.Fee) VND</span></div>
+            <div><strong>Status</strong><span>@(Model.ProgramStatus ? "Active" : "Inactive")</span></div>
+        </div>
+
+        <h4 class="mt-4">Output Standard</h4>
+        <p>
+            Students complete this program with stronger vocabulary, grammar, listening, speaking, reading, and writing skills for the @Model.LevelName level.
+        </p>
+
+        <a href="/Student/RegisterClass?programId=@Model.ProgramId" class="btn btn-success">Register Button</a>
+        <a href="/Program" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<section class="mt-5">
+    <h3>Related Classes</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>Class</th>
+                <th>Room</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @if (classes != null && classes.Count > 0)
+            {
+                foreach (var item in classes)
+                {
+                    <tr>
+                        <td>@item.ClassName</td>
+                        <td>@item.Room</td>
+                        <td>@(item.StartDate.HasValue ? item.StartDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+                        <td>@item.Status</td>
+                        <td><a href="/Student/RegisterClass?classId=@item.ClassId" class="btn btn-primary btn-sm">Register</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No related classes yet.</td>
+                </tr>
+            }
+        </table>
+    </div>
+</section>
+
+@if (relatedPrograms != null && relatedPrograms.Count > 0)
+{
+    <section class="mt-4">
+        <h3>Related Programs</h3>
+        <div class="row g-3">
+            @foreach (var item in relatedPrograms)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>@item.ProgramName</h5>
+                            <p>@item.LevelName - @item.DurationMonths months</p>
+                            <a href="/Program/Detail/@item.ProgramId" class="btn btn-outline-primary btn-sm">View</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

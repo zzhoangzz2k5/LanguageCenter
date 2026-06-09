@@ -1,0 +1,16 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Add Teacher";
+}
+
+<h2>Add Teacher</h2>
+
+@using (Html.BeginForm("CreateTeacher", "Admin", FormMethod.Post, new { @class = "card p-4" }))
+{
+    <div class="mb-3"><label>Full Name</label><input name="fullName" class="form-control" required /></div>
+    <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" required /></div>
+    <div class="mb-3"><label>Password</label><input type="password" name="password" class="form-control" minlength="6" required /></div>
+    <div class="mb-3"><label>Specialty</label><input name="specialty" class="form-control" required /></div>
+    <div class="mb-3"><label>Experience Years</label><input type="number" name="experienceYears" class="form-control" min="0" /></div>
+    <button class="btn btn-success">Save</button>
+}

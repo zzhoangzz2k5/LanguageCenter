@@ -6,6 +6,11 @@
 
 <h2>My Profile</h2>
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="card profile-card">
     <div class="card-body text-center">
         <img src="@(Model == null || string.IsNullOrEmpty(Model.Photo) ? Url.Content("~/Content/images/teacher1.jpg") : Url.Content("~/Content/images/" + Model.Photo))" class="avatar-preview" alt="Teacher photo" />
@@ -14,7 +19,8 @@
 
         @using (Html.BeginForm("UploadPhoto", "Teacher", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <input type="file" name="photo" class="form-control" accept="image/*" required />
+            @Html.AntiForgeryToken()
+            <input type="file" name="photo" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" required />
             <button class="btn btn-primary mt-3">Upload Image</button>
         }
     </div>

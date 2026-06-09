@@ -1,0 +1,287 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- banner one start -->
+<div class="xc-banner-one pt-20 pb-40">
+    <div class="container">
+        <div class="row">
+            <partial name="Partials/_HomeSideBar" />
+            <partial name="Partials/_HomeTop" />
+        </div>
+    </div>
+</div>
+<!-- banner one end -->
+
+<!-- offer one start -->
+<div class="xc-offer-one pb-80">
+    <div class="container">
+        <div class="xc-sec-heading">
+            <h3 class="xc-sec-heading__title"><span><i class="icon-power"></i></span>Flash Sale</h3>
+        </div>
+        <div class="xc-offer-one__wrap bg-white">
+            <div class="row align-items-md-center">
+                <div class="col-xl-4">
+                    <div class="xc-offer-one__timer">
+                        <h3 class="xc-offer-one__title">Deals and offers</h3>
+                        <p class="xc-oofer-one__info">High quality smartphones</p>
+                        <div class="xc-offer-one__countdown" data-countdown data-date="Dec 31 2026 20:20:22">
+                            <div class="xc-offer-one__countdown-inner">
+                                <ul>
+                                    <li><span data-days>0</span> Days</li>
+                                    <li><span data-hours>0</span> Hrs</li>
+                                    <li><span data-minutes>0</span> Min</li>
+                                    <li><span data-seconds>0</span> Sec</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="xc-offer-one__cats">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-2">
+                            @if (ViewBag.Products != null)
+                            {
+                                int count = 0;
+                                foreach (var product in ViewBag.Products)
+                                {
+                                    if (product.PriceSale < product.Price)
+                                    {
+                                        if (count++ >= 4) break;
+                                        var discount = (int)(100 - (product.PriceSale / product.Price * 100));
+                                        <div class="col">
+                                            <div class="xc-offer-one__cat text-center p-3 border rounded bg-light">
+                                                <img src="~/img/products/@product.Photo" alt="@product.Name" style="max-height: 80px; object-fit: contain; margin-bottom: 10px;">
+                                                <h4 class="xc-offer-one__cat-title" style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px;">
+                                                    <a asp-controller="Product" asp-action="DetailsBySlug" asp-route-slug="@product.Slug">@product.Name</a>
+                                                </h4>
+                                                <span class="badge bg-danger">-@discount%</span>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- offer one end -->
+<!-- featured start -->
+<div class="xc-featured pb-80">
+    <div class="container">
+
+        <div class="xc-sec-heading">
+            <h3 class="xc-sec-heading__title">
+                <span><i class="icon-star"></i></span>
+                Featured Products
+            </h3>
+        </div>
+
+        <div class="row">
+            @if (ViewBag.Featured != null)
+            {
+                foreach (var product in ViewBag.Featured)
+                {
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+
+                            <a asp-controller="Product"
+                               asp-action="DetailsBySlug"
+                               asp-route-slug="@product.Slug">
+                                <img src="~/img/products/@product.Photo"
+                                     class="card-img-top p-3"
+                                     style="height:220px;object-fit:contain;"
+                                     alt="@product.Name">
+                            </a>
+
+                            <div class="card-body text-center">
+
+                                <h5 class="card-title">
+                                    <a asp-controller="Product"
+                                       asp-action="DetailsBySlug"
+                                       asp-route-slug="@product.Slug"
+                                       class="text-dark text-decoration-none">
+                                        @product.Name
+                                    </a>
+                                </h5>
+
+                                @if (product.PriceSale < product.Price)
+                                {
+                                    <div>
+                                        <del class="text-muted">
+                                            $@product.Price
+                                        </del>
+                                    </div>
+
+                                    <div class="text-danger fw-bold fs-5">
+                                        $@product.PriceSale
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-primary fw-bold fs-5">
+                                        $@product.Price
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="card-footer bg-white border-0 text-center">
+                                <a asp-controller="Product"
+                                   asp-action="DetailsBySlug"
+                                   asp-route-slug="@product.Slug"
+                                   class="btn btn-outline-primary btn-sm">
+                                    View
+                                </a>
+
+                                <a asp-controller="Cart"
+                                   asp-action="AddToCart"
+                                   asp-route-id="@product.Id"
+                                   class="btn btn-primary btn-sm">
+                                    Add To Cart
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+<!-- featured end -->
+
+<!-- sale one start -->
+<div class="xc-sale-one pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4 d-none d-xl-block">
+                <div class="xc-sale-one__banner h-100">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="1">
+                        <img src="~/img/resourse/flash-sale-1-1.jpg" alt="sale" class="w-100 h-100" style="object-fit: cover; border-radius: 8px;">
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <div class="xc-product-one__wrapper bg-white p-3 rounded shadow-sm">
+                    <h3 class="mb-4" style="font-size: 18px; font-weight: 700; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">Trending Products</h3>
+                    <div class="row g-2">
+                        @if (ViewBag.Products != null)
+                        {
+                            int count = 0;
+                            foreach (var product in ViewBag.Products)
+                            {
+                                if (count++ >= 6) break;
+                                <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                    <div class="xc-product-one__item text-center p-2 border rounded">
+                                        <a asp-controller="Product" asp-action="DetailsBySlug" asp-route-slug="@product.Slug">
+                                            <img src="~/img/products/@product.Photo" alt="@product.Name" style="height: 100px; object-fit: contain; margin-bottom: 8px;">
+                                        </a>
+                                        <h5 class="xc-product-one__price text-primary font-weight-bold" style="font-size: 14px;">$@product.PriceSale</h5>
+                                        <h4 class="xc-product-one__title" style="font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 5px;">
+                                            <a asp-controller="Product" asp-action="DetailsBySlug" asp-route-slug="@product.Slug">@product.Name</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- sale one end -->
+
+<!-- product two start (Recommended) -->
+<div class="xc-product-two pb-80">
+    <div class="container">
+        <div class="xc-sec-heading">
+            <h3 class="xc-sec-heading__title">
+                <span><i class="icon-power"></i></span>
+                Recommended Items
+            </h3>
+        </div>
+
+        <div class="row gutter-y-20 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
+            @if (ViewBag.Products != null)
+            {
+                foreach (var product in ViewBag.Products)
+                {
+                    <div class="col">
+                        <div class="xc-product-two__item border p-3 rounded text-center bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+
+                            <div>
+                                @if (product.PriceSale < product.Price)
+                                {
+                                    <span class="badge bg-danger float-start">SALE</span>
+                                }
+
+                                <div class="xc-product-two__img my-3">
+                                    <a asp-controller="Product"
+                                       asp-action="DetailsBySlug"
+                                       asp-route-slug="@product.Slug">
+                                        <img src="~/img/products/@product.Photo"
+                                             alt="@product.Name"
+                                             style="height:150px;object-fit:contain;">
+                                    </a>
+                                </div>
+
+                                <div class="xc-product-two__ratting text-warning mb-2">
+                                    <i class="icon-star"></i>
+                                    <i class="icon-star"></i>
+                                    <i class="icon-star"></i>
+                                    <i class="icon-star"></i>
+                                    <i class="icon-star"></i>
+                                    (12)
+                                </div>
+
+                                <h3 class="xc-product-two__title"
+                                    style="font-size:15px;font-weight:600;height:42px;overflow:hidden;">
+                                    <a asp-controller="Product"
+                                       asp-action="DetailsBySlug"
+                                       asp-route-slug="@product.Slug">
+                                        @product.Name
+                                    </a>
+                                </h3>
+                            </div>
+
+                            <div>
+                                <h4 class="xc-product-two__price">
+                                    @if (product.PriceSale < product.Price)
+                                    {
+                                        <del>$@product.Price</del>
+                                        <span>$@product.PriceSale</span>
+                                    }
+                                    else
+                                    {
+                                        <span>$@product.Price</span>
+                                    }
+                                </h4>
+
+                                <div class="xc-product-two__btn">
+                                    <a asp-controller="Product"
+                                       asp-action="DetailsBySlug"
+                                       asp-route-slug="@product.Slug">
+                                        <i class="icon-eye"></i>
+                                    </a>
+
+                                    <a asp-controller="Cart"
+                                       asp-action="AddToCart"
+                                       asp-route-id="@product.Id">
+                                        <i class="icon-grocery-store"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>  
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- product two end -->

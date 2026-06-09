@@ -11,6 +11,7 @@
 
 @using (Html.BeginForm("CreateClass", "Admin", FormMethod.Post, new { @class = "card p-4" }))
 {
+    @Html.AntiForgeryToken()
     <div class="mb-3"><label>Class Name</label><input name="ClassName" class="form-control" required /></div>
     <div class="mb-3">
         <label>Program</label>

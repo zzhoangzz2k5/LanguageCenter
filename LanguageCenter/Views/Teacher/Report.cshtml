@@ -1,0 +1,40 @@
+@model IEnumerable<LanguageCenter.Models.Class>
+
+@{
+    ViewBag.Title = "Teacher Reports";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>Statistics / Reports</h2>
+        <p class="text-muted mb-0">Summary of classes and registrations assigned to you.</p>
+    </div>
+    <a href="/Teacher/ExportReportCsv" class="btn btn-success">Export CSV</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="alert alert-primary text-center"><h3>@ViewBag.TotalClasses</h3>Classes</div></div>
+    <div class="col-md-3"><div class="alert alert-info text-center"><h3>@ViewBag.TotalRegistrations</h3>Registrations</div></div>
+    <div class="col-md-3"><div class="alert alert-success text-center"><h3>@ViewBag.ConfirmedRegistrations</h3>Confirmed</div></div>
+    <div class="col-md-3"><div class="alert alert-warning text-center"><h3>@ViewBag.PendingRegistrations</h3>Pending</div></div>
+</div>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Class</th>
+        <th>Program</th>
+        <th>Schedule</th>
+        <th>Students</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ClassName</td>
+            <td>@(item.Program == null ? "Updating" : item.Program.ProgramName)</td>
+            <td>@(item.StartDate.HasValue ? item.StartDate.Value.ToString("dd/MM/yyyy") : "Updating") - @(item.EndDate.HasValue ? item.EndDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+            <td>@item.Registrations.Count</td>
+            <td>@item.Status</td>
+        </tr>
+    }
+</table>

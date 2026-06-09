@@ -1,0 +1,25 @@
+@model IEnumerable<LanguageCenter.Models.Consultation>
+
+@{
+    ViewBag.Title = "Student Feedback";
+}
+
+<h2>View Student Feedback</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Feedback Content</th>
+        <th>Rating</th>
+        <th>Feedback Date</th>
+        <th>Status</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Question</td>
+            <td>N/A</td>
+            <td>@(item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+            <td>@item.RequestStatus</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,52 @@
+@model IEnumerable<LanguageCenter.Models.PlacementTest>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Placement Test Registration";
+}
+
+<h2>Placement Test Registration</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@using (Html.BeginForm("PlacementTests", "Student", FormMethod.Post, new { @class = "card p-4 mb-4" }))
+{
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label>Test Date</label>
+            <input type="date" name="testDate" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label>Test Time</label>
+            <input type="time" name="testTime" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label>Level</label>
+            <input name="suggestedLevel" class="form-control" placeholder="Beginner, IELTS, TOEIC..." required />
+        </div>
+    </div>
+    <button class="btn btn-success mt-3">Register Test</button>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Test Date</th>
+        <th>Test Time</th>
+        <th>Level</th>
+        <th>Status</th>
+        <th>Result</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@(item.TestDate.HasValue ? item.TestDate.Value.ToString("dd/MM/yyyy") : "Updating")</td>
+            <td>@(item.TestTime.HasValue ? item.TestTime.Value.ToString(@"hh\:mm") : "Updating")</td>
+            <td>@item.SuggestedLevel</td>
+            <td>@item.Status</td>
+            <td>@item.ResultScore</td>
+        </tr>
+    }
+</table>

@@ -2,12 +2,15 @@
 
 @{
     ViewBag.Title = "EditProgram";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var programTypes = ViewBag.ProgramTypes as List<LanguageCenter.Models.ProgramTypeViewModel> ?? new List<LanguageCenter.Models.ProgramTypeViewModel>();
 }
 
 <h2>Edit Program</h2>
 
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.ProgramId)
 
     <div class="form-group">
@@ -20,8 +23,12 @@
 
     <div class="form-group">
         <label>Level</label>
-        @Html.TextBoxFor(x => x.LevelName,
-            new { @class = "form-control" })
+        <select name="LevelName" class="form-control" required>
+            @foreach (var item in programTypes)
+            {
+                <option value="@item.Name" @(Model.LevelName == item.Name ? "selected" : "")>@item.Name</option>
+            }
+        </select>
     </div>
 
     <br />

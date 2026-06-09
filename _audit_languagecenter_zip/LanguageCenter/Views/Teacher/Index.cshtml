@@ -1,0 +1,22 @@
+@model IEnumerable<LanguageCenter.Models.UserAccount>
+
+@{
+    ViewBag.Title = "Teachers";
+}
+
+<h2 class="mb-4">Our Teachers</h2>
+
+<div class="row g-4">
+    @foreach (var t in Model)
+    {
+        <div class="col-md-4">
+            <div class="card teacher-card h-100">
+                <img src="@(string.IsNullOrEmpty(t.Photo) ? Url.Content("~/Content/images/teacher1.jpg") : Url.Content("~/Content/images/" + t.Photo))" class="teacher-image" alt="@t.FullName" />
+                <div class="card-body">
+                    <h5>@t.FullName</h5>
+                    <p>@t.Email</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

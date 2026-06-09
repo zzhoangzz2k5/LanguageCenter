@@ -1,0 +1,105 @@
+@model PhoneShop.Models.Product
+
+<!-- xc-breadcrumb area start -->
+<div class="xc-breadcrumb__area base-bg">
+    <div class="xc-breadcrumb__bg w-img xc-breadcrumb__overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-12">
+                <div class="xc-breadcrumb__content p-relative z-index-1">
+                    <div class="xc-breadcrumb__list">
+                        <span><a asp-controller="Home" asp-action="Index">Home</a></span>
+                        <span class="dvdr"><i class="icon-arrow-right"></i></span>
+                        <span>Product Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- xc-breadcrumb area end -->
+
+<!-- product details area start -->
+<section class="product__details-area pt-80 pb-80">
+    <div class="container">
+        <div class="row gutter-y-30">
+            <div class="col-xl-6 col-lg-6">
+                <div class="product__details-thumb-tab">
+                    <div class="product__details-thumb-content w-img border p-4 text-center rounded bg-white">
+                        <img src="~/img/products/@Model.Photo" alt="@Model.Name" style="max-height: 400px; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="product__details-wrapper">
+                    <div class="product__details-stock">
+                        <span>In Stock</span>
+                    </div>
+                    <h3 class="product__details-title">@Model.Name</h3>
+
+                    <div class="product__details-rating d-flex align-items-center">
+                        <div class="product__rating product__rating-2 d-flex text-warning">
+                            <span><i class="icon-star"></i></span>
+                            <span><i class="icon-star"></i></span>
+                            <span><i class="icon-star"></i></span>
+                            <span><i class="icon-star"></i></span>
+                            <span><i class="icon-star"></i></span>
+                        </div>
+                        <div class="product__details-rating-count">
+                            <span>(12 customer reviews)</span>
+                        </div>
+                    </div>
+
+                    <p>@Model.Description</p>
+
+                    <div class="product__details-price">
+                        @if (Model.PriceSale < Model.Price)
+                        {
+                            <span class="product__details-ammount old-ammount">$@Model.Price</span>
+                            <span class="product__details-ammount new-ammount">$@Model.PriceSale</span>
+                            var discount = (int)(100 - (Model.PriceSale / Model.Price * 100));
+                            <span class="product__details-offer">-@discount%</span>
+                        }
+                        else
+                        {
+                            <span class="product__details-ammount new-ammount">$@Model.Price</span>
+                        }
+                    </div>
+
+                    <form method="get" asp-controller="Cart" asp-action="AddToCart">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="product__details-quantity">
+                            <div class="xc-product-quantity mt-10 mb-10">
+                                <span class="xc-cart-minus sub">
+                                    <i class="fas fa-minus"></i>
+                                </span>
+                                <input class="xc-cart-input" type="text" name="quantity" value="1" />
+                                <span class="xc-cart-plus add">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="product__details-action d-flex flex-wrap align-items-center">
+                            <button type="submit" class="product-add-cart-btn swiftcart-btn border-0">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="product__details-sku product__details-more mt-4">
+                        <p>SKU:</p>
+                        <span>PH-@Model.Id-S</span>
+                    </div>
+                    <div class="product__details-categories product__details-more">
+                        <p>Category:</p>
+                        <span>
+                            <a href="#">@(Model.Category?.Name ?? "Smartphones")</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product details area end -->
